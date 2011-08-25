@@ -1,0 +1,7 @@
+This is an Audio Framework built in java that aims at finding the onsets in an audio file from the processment of its the raw audio data (mp3/wav).
+
+Now, in order to detect the onsets, it uses a method called Spectral Difference or Spectral Flux, but the purpose is to make this framework able to use other methods.
+
+It can extract the onsets from an audio file or from a list of audio files and export them to text files containing the time instants at which the onsets occur and to plot both the raw audio and the processed data in order for one to have an idea if it's working properly.
+
+P.S. This program is a part of my master thesis in the Open Source Software Master at ISCTE.

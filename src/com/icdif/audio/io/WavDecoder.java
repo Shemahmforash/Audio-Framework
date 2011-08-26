@@ -94,8 +94,8 @@ public class WavDecoder implements AudioDecoder {
 
 		inputStream.readIntLittleEndian();
 
-		// it reads untl the start of the data tag, the content of this tag will
-		// be read with the function readSample
+		/*it reads until the start of the data tag, the content of this tag will
+		 be read with the function readSample*/
 
 	}
 

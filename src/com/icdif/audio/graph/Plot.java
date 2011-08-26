@@ -585,7 +585,7 @@ public class Plot {
 
 		play = true;
 		try {
-			device = new AudioDevice();
+			device = new AudioDevice(decoder.getSampleRate());
 		} catch (Exception e) {
 			play = false;
 			throw new Exception("Audio Unavailable");

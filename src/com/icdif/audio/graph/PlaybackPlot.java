@@ -24,7 +24,7 @@ import com.icdif.audio.io.AudioDecoder;
  */
 public class PlaybackPlot {
 	
-	private AudioDevice device = new AudioDevice();
+	private AudioDevice device;
 	
 	/**
 	 * This constructor plays back the audio form the decoder and sets the
@@ -41,6 +41,8 @@ public class PlaybackPlot {
 	 */
 	public PlaybackPlot(Plot plot, int samplesPerPixel, AudioDecoder decoder)
 			throws Exception {
+		
+		device = new AudioDevice(decoder.getSampleRate());
 		
 		float[] samples = new float[1024];
 

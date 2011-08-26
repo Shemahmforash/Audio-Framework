@@ -30,7 +30,6 @@ public class ExamplePeaksWithoutPlot {
 	 * @throws FileNotFoundException 
 	 */
 	public static void main(String[] args) throws FileNotFoundException, Exception {
-		// TODO Auto-generated method stub
 		
 		MP3Decoder decoder = new MP3Decoder(new FileInputStream(FILE));
 

@@ -148,7 +148,6 @@ public class PeakDetector {
 			if (filteredSpectralFlux.get(i) > filteredSpectralFlux.get(i + 1)) {
 				peaks.add(filteredSpectralFlux.get(i));
 				// peaks.add((float)1);
-
 			}
 
 			else

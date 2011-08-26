@@ -34,7 +34,7 @@ public class WavDecoder implements AudioDecoder {
 	/**
 	 * The sample rate in Hertz
 	 */
-	private final float sampleRate;
+	private float sampleRate;
 
 	/**
 	 * Constructor that initializes the stream from where we read the pcm data.
@@ -134,5 +134,12 @@ public class WavDecoder implements AudioDecoder {
 
 		return numSamples;
 	}
+
+	@Override
+	public float getSampleRate() {
+		return this.sampleRate;
+	}
+
+	
 
 }

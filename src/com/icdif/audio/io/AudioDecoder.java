@@ -27,5 +27,11 @@ public interface AudioDecoder {
 	 * @return The number of read samples.
 	 */
 	public int readSamples(float[] samples);
+	
+	/**
+	 * Gets the sample rate of the audio to be decoded
+	 * @return the sample rate
+	 */
+	public float getSampleRate();
 
 }

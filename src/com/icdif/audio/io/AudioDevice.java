@@ -35,18 +35,25 @@ public class AudioDevice {
 	 * @throws LineUnavailableException
 	 *             when the audio is not available
 	 */
-	public AudioDevice() throws LineUnavailableException {
+	public AudioDevice(final float sampleRate) throws LineUnavailableException {
 
-		AudioFormat format = getAudioFormat();
+		/*
+		 * Defines the audio format
+		 */
+		AudioFormat format = getAudioFormat(sampleRate);
 
+		/*
+		 * Opens the line to be used in playing
+		 */
 		soundLine = AudioSystem.getSourceDataLine(format);
 		soundLine.open(format);
 		soundLine.start();
 	}
 
 	/**
-	 * Passes the samples to the soundcard that plays them. Note: The samples
-	 * have to be sampled at 44100Hz, mono and have to be in the range [-1,1].
+	 * Passes the samples to the soundcard that plays them. (Old times )Note:
+	 * The samples have to be sampled at 44100Hz, mono and have to be in the
+	 * range [-1,1].
 	 * 
 	 * @param samples
 	 *            The Samples to play
@@ -147,6 +154,18 @@ public class AudioDevice {
 		return new AudioFormat(Encoding.PCM_SIGNED, 44100, 16, 1, 2, 44100,
 				false);
 
+	}
+
+	/**
+	 * Defines the audio format
+	 * 
+	 * @param sampleRate
+	 *            the sample rate of the audio to be played
+	 * @return the audio format object
+	 */
+	private AudioFormat getAudioFormat(final float sampleRate) {
+		return new AudioFormat(Encoding.PCM_SIGNED, sampleRate, 16, 1, 2,
+				sampleRate, false);
 	}
 
 }

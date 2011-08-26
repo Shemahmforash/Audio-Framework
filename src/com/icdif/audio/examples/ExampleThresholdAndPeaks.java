@@ -27,7 +27,7 @@ public class ExampleThresholdAndPeaks {
 	
 	//public static final String FILE = "/media/LaCie/musica/Oldies/Roxette (by Tweety) - Greatest Hits/03_Roxette - The Look.mp3";
 	
-	public static final String FILE = "/media/LaCie/musica/Neo-Folk/sonne hagal - jordansfrost - 2008/05_sonne_hagal-hidden_flame.mp3";
+	public static final String FILE = "/media/Lacie/musica/Neo-Folk/sonne hagal - jordansfrost - 2008/05_sonne_hagal-hidden_flame.mp3";
 	
 	//public static final String FILE = "/media/LaCie/musica/Neo-Folk/hekate - 2004 - goddess/08-hekate-dance_of_taurus-just.mp3";
 	

@@ -4,7 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import com.icdif.audio.io.AudioDevice;
-import com.icdif.audio.io.WaveDecoder;
+import com.icdif.audio.io.WavDecoder;
 
 /**
  * @author wanderer
@@ -21,7 +21,7 @@ public class Main {
 			Exception {
 		float[] samples = new float[1024];
 
-		WaveDecoder reader = new WaveDecoder(new FileInputStream(
+		WavDecoder reader = new WavDecoder(new FileInputStream(
 				"/home/wanderer/Dropbox/code/java/SoundIt-Basic/teste-wav2.wav"));
 
 		AudioDevice device = new AudioDevice();

@@ -51,6 +51,11 @@ public class MP3Decoder implements AudioDecoder {
 	AudioInputStream in;
 	FloatSampleBuffer buffer;
 	byte[] bytes;
+	
+	/**
+	 * The sample rate in Hertz
+	 */
+	private float sampleRate;
 
 	public MP3Decoder(InputStream stream) throws Exception {
 		InputStream in = new BufferedInputStream(stream, 1024 * 1024);
@@ -60,6 +65,8 @@ public class MP3Decoder implements AudioDecoder {
 				baseFormat.getSampleRate(), 16, baseFormat.getChannels(),
 				baseFormat.getChannels() * 2, baseFormat.getSampleRate(), false);
 		this.in = AudioSystem.getAudioInputStream(format, this.in);
+		
+		this.sampleRate = baseFormat.getSampleRate();
 	}
 
 	@Override
@@ -306,5 +313,10 @@ public class MP3Decoder implements AudioDecoder {
 					nTotalFrames, mLength, aff_properties);
 		}
 
+	}
+
+	@Override
+	public float getSampleRate() {
+		return this.sampleRate;
 	}
 }

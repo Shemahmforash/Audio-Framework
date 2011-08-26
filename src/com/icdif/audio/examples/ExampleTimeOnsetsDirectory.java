@@ -17,11 +17,6 @@ public class ExampleTimeOnsetsDirectory {
 
 	/**
 	 * @param args
-	 * @throws Exception
-	 * @throws FileNotFoundException
-	 */
-	/**
-	 * @param args
 	 * @throws FileNotFoundException
 	 * @throws Exception
 	 */

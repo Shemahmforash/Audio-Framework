@@ -24,7 +24,7 @@ public class Main {
 		WavDecoder reader = new WavDecoder(new FileInputStream(
 				"/home/wanderer/Dropbox/code/java/SoundIt-Basic/teste-wav2.wav"));
 
-		AudioDevice device = new AudioDevice();
+		AudioDevice device = new AudioDevice(reader.getSampleRate());
 
 		while (reader.readSamples(samples) > 0) {
 			device.playSamples(samples);

@@ -174,7 +174,7 @@ public class PeakDetector {
 			// System.out.println("onset(" + i + ") = " + (double)(i *
 			// 1024.0/44100.0));
 		}
-
+		
 		return this.onsets;
 
 	}

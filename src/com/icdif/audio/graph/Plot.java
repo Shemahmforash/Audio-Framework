@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
+import java.io.Console;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -209,12 +210,12 @@ public class Plot {
 			 */
 			if (buffImage.getWidth() < samples.length / samplesPerPixel) {
 				buffImage = new BufferedImage(
-						(int) (samples.length / samplesPerPixel), frame
-								.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+						(int) (samples.length / samplesPerPixel),
+						frame.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 				Graphics2D graph = buffImage.createGraphics();
 				graph.setColor(Color.black);
-				graph.fillRect(0, 0, buffImage.getWidth(), buffImage
-						.getHeight());
+				graph.fillRect(0, 0, buffImage.getWidth(),
+						buffImage.getHeight());
 				graph.dispose();
 				panel.setSize(buffImage.getWidth(), buffImage.getHeight());
 			}
@@ -260,10 +261,10 @@ public class Plot {
 						samples[i], 0);
 
 				/* it draws a line between the last and this value */
-				graph.drawLine((int) ((i - 1) / samplesPerPixel), buffImage
-						.getHeight()
-						- (int) lastSampleScaled, (int) (i / samplesPerPixel),
-						buffImage.getHeight() - (int) sampleScaled);
+				graph.drawLine((int) ((i - 1) / samplesPerPixel),
+						buffImage.getHeight() - (int) lastSampleScaled,
+						(int) (i / samplesPerPixel), buffImage.getHeight()
+								- (int) sampleScaled);
 
 				/*
 				 * the sample of this iteration will be next iteration's last
@@ -314,13 +315,13 @@ public class Plot {
 				 */
 
 				buffImage = new BufferedImage(
-						(int) (samples.size() / samplesPerPixel), frame
-								.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+						(int) (samples.size() / samplesPerPixel),
+						frame.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 				Graphics2D graph = buffImage.createGraphics();
 				graph.setColor(Color.black);
-				graph.fillRect(0, 0, buffImage.getWidth(), buffImage
-						.getHeight());
-				//graph.dispose();
+				graph.fillRect(0, 0, buffImage.getWidth(),
+						buffImage.getHeight());
+				// graph.dispose();
 				panel.setSize(buffImage.getWidth(), buffImage.getHeight());
 			}
 
@@ -354,22 +355,22 @@ public class Plot {
 			// * image.getHeight() / 3 + image.getHeight() / 2;
 
 			// Scales the first value of the array in order to be plotted
-			float lastSampleScaled = calculateScaledValue(buffImage, samples
-					.get(0), 0);
+			float lastSampleScaled = calculateScaledValue(buffImage,
+					samples.get(0), 0);
 
 			for (int i = 1; i < samples.size(); i++) {
 				// float value = (samples.get(i) / scalingFactor)
 				// * image.getHeight() / 3 + image.getHeight() / 2;
 
 				// Scales the ith value of the array in order to be plotted
-				float sampleScaled = calculateScaledValue(buffImage, samples
-						.get(i), 0);
+				float sampleScaled = calculateScaledValue(buffImage,
+						samples.get(i), 0);
 
 				/* it draws a line between the last and this value */
-				graph.drawLine((int) ((i - 1) / samplesPerPixel), buffImage
-						.getHeight()
-						- (int) lastSampleScaled, (int) (i / samplesPerPixel),
-						buffImage.getHeight() - (int) sampleScaled);
+				graph.drawLine((int) ((i - 1) / samplesPerPixel),
+						buffImage.getHeight() - (int) lastSampleScaled,
+						(int) (i / samplesPerPixel), buffImage.getHeight()
+								- (int) sampleScaled);
 
 				/*
 				 * the sample of this iteration will be next iteration's last
@@ -377,7 +378,7 @@ public class Plot {
 				 */
 				lastSampleScaled = sampleScaled;
 			}
-			//graph.dispose();
+			// graph.dispose();
 		}
 	}
 
@@ -408,12 +409,12 @@ public class Plot {
 			 */
 			if (buffImage.getWidth() < samples.length / samplesPerPixel) {
 				buffImage = new BufferedImage(
-						(int) (samples.length / samplesPerPixel), frame
-								.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+						(int) (samples.length / samplesPerPixel),
+						frame.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 				Graphics2D graph = buffImage.createGraphics();
 				graph.setColor(Color.black);
-				graph.fillRect(0, 0, buffImage.getWidth(), buffImage
-						.getHeight());
+				graph.fillRect(0, 0, buffImage.getWidth(),
+						buffImage.getHeight());
 				graph.dispose();
 				panel.setSize(buffImage.getWidth(), buffImage.getHeight());
 			}
@@ -459,10 +460,10 @@ public class Plot {
 				 * draws a line between the value of this iteration and that of
 				 * the previous
 				 */
-				graph.drawLine((int) ((i - 1) / samplesPerPixel), buffImage
-						.getHeight()
-						- (int) lastSampleScaled, (int) (i / samplesPerPixel),
-						buffImage.getHeight() - (int) sampleScaled);
+				graph.drawLine((int) ((i - 1) / samplesPerPixel),
+						buffImage.getHeight() - (int) lastSampleScaled,
+						(int) (i / samplesPerPixel), buffImage.getHeight()
+								- (int) sampleScaled);
 
 				/*
 				 * the sample of this iteration will be next iteration's last
@@ -501,12 +502,12 @@ public class Plot {
 			 */
 			if (buffImage.getWidth() < samples.size() / samplesPerPixel) {
 				buffImage = new BufferedImage(
-						(int) (samples.size() / samplesPerPixel), frame
-								.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+						(int) (samples.size() / samplesPerPixel),
+						frame.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 				Graphics2D graph = buffImage.createGraphics();
 				graph.setColor(Color.black);
-				graph.fillRect(0, 0, buffImage.getWidth(), buffImage
-						.getHeight());
+				graph.fillRect(0, 0, buffImage.getWidth(),
+						buffImage.getHeight());
 				graph.dispose();
 				panel.setSize(buffImage.getWidth(), buffImage.getHeight());
 			}
@@ -528,8 +529,8 @@ public class Plot {
 			drawReferenceLines(graph, true, true, true);
 			graph.setColor(Color.white);
 
-			graph.drawLine(0, buffImage.getHeight() / 2, (int) buffImage
-					.getWidth(), buffImage.getHeight() / 2);
+			graph.drawLine(0, buffImage.getHeight() / 2,
+					(int) buffImage.getWidth(), buffImage.getHeight() / 2);
 			graph.setColor(color);
 			/*
 			 * float lastValue = (samples.get(0) / scalingFactor)
@@ -538,8 +539,8 @@ public class Plot {
 			 */
 
 			// Scales the first value of the array in order to be plotted
-			float lastSampleScaled = calculateScaledValue(buffImage, samples
-					.get(0), verticalOffset);
+			float lastSampleScaled = calculateScaledValue(buffImage,
+					samples.get(0), verticalOffset);
 
 			for (int i = 1; i < samples.size(); i++) {
 
@@ -550,17 +551,17 @@ public class Plot {
 				 */
 
 				// Scales the ith value of the array in order to be plotted
-				float sampleScaled = calculateScaledValue(buffImage, samples
-						.get(i), verticalOffset);
+				float sampleScaled = calculateScaledValue(buffImage,
+						samples.get(i), verticalOffset);
 
 				/*
 				 * draws a line between the value of this iteration and that of
 				 * the previous
 				 */
-				graph.drawLine((int) ((i - 1) / samplesPerPixel), buffImage
-						.getHeight()
-						- (int) lastSampleScaled, (int) (i / samplesPerPixel),
-						buffImage.getHeight() - (int) sampleScaled);
+				graph.drawLine((int) ((i - 1) / samplesPerPixel),
+						buffImage.getHeight() - (int) lastSampleScaled,
+						(int) (i / samplesPerPixel), buffImage.getHeight()
+								- (int) sampleScaled);
 
 				/*
 				 * the sample of this iteration will be next iteration's last
@@ -582,6 +583,9 @@ public class Plot {
 	 */
 	public void PlayInPlot(float samplesPerPixel, AudioDecoder decoder)
 			throws Exception {
+
+		System.out
+				.println("PlayInPlot sample rate: " + decoder.getSampleRate());
 
 		play = true;
 		try {
@@ -610,12 +614,12 @@ public class Plot {
 				startTime = System.nanoTime();
 
 			// I divide by 10⁹ to convert the nanotime to seconds (we need it in
-			// seconds because the sample rate is given in seconds)
+			// seconds because the sample rate is given in Hz, that is, s⁻¹)
 			float elapsedTime = (System.nanoTime() - startTime) / 1000000000.0f;
 
 			// this gives us the position, in pixels, of the marker at the
 			// elapsed time
-			int position = (int) (elapsedTime * (44100 / samplesPerPixel));
+			int position = (int) (elapsedTime * (decoder.getSampleRate() / samplesPerPixel));
 
 			// sets the Marker in the plot at the position calculated
 			this.setMarker(position, Color.white);
@@ -692,15 +696,15 @@ public class Plot {
 			// eh bem isto
 			float minScaled = calculateScaledValue(buffImage, min, 0);
 			graph.drawLine(0, (int) minScaled + buffImage.getHeight() / 2,
-					(int) buffImage.getWidth(), (int) minScaled
-							+ buffImage.getHeight() / 2);
+					(int) buffImage.getWidth(),
+					(int) minScaled + buffImage.getHeight() / 2);
 
 			char[] chars = new char[2];
 			chars[0] = '-';
 			chars[1] = '1';
 
-			graph.drawChars(chars, 0, 2, 5, (int) minScaled
-					+ buffImage.getHeight() / 2 - 10);
+			graph.drawChars(chars, 0, 2, 5,
+					(int) minScaled + buffImage.getHeight() / 2 - 10);
 		}
 
 		if (drawMax) {
@@ -720,8 +724,8 @@ public class Plot {
 
 		if (drawZero) {
 			// draws the zero
-			graph.drawLine(0, buffImage.getHeight() / 2, (int) buffImage
-					.getWidth(), buffImage.getHeight() / 2);
+			graph.drawLine(0, buffImage.getHeight() / 2,
+					(int) buffImage.getWidth(), buffImage.getHeight() / 2);
 
 			char[] chars = new char[1];
 			chars[0] = '0';

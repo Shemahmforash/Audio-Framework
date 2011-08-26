@@ -26,7 +26,10 @@ public class ExamplePeakDetector {
 	// public static final String FILE =
 	// "/media/LaCie/musica/Oldies/Roxette (by Tweety) - Greatest Hits/03_Roxette - The Look.mp3";
 
-	public static final String FILE = "/media/Lacie/musica/Neo-Folk/sonne hagal - jordansfrost - 2008/05_sonne_hagal-hidden_flame.mp3";
+	// public static final String FILE =
+	// "/media/Lacie/musica/Neo-Folk/sonne hagal - jordansfrost - 2008/05_sonne_hagal-hidden_flame.mp3";
+
+	public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/6-three.wav";
 
 	// public static final String FILE =
 	// "/media/LaCie/musica/Neo-Folk/hekate - 2004 - goddess/08-hekate-dance_of_taurus-just.mp3";
@@ -60,12 +63,12 @@ public class ExamplePeakDetector {
 	public static void main(String[] args) throws FileNotFoundException,
 			Exception {
 
-		MP3Decoder decoder = new MP3Decoder(new FileInputStream(FILE));
+		// MP3Decoder decoder = new MP3Decoder(new FileInputStream(FILE));
 
-		// WavDecoder decoder = new WavDecoder(new FileInputStream(FILE));
+		WavDecoder decoder = new WavDecoder(new FileInputStream(FILE));
 
 		SpectralDifference spectDiff = new SpectralDifference(decoder, 1024,
-				512, true, 44100);
+				512, true, (int) decoder.getSampleRate());
 
 		// instantiates the peak detector, by passing the spectral difference
 		// already calculated
@@ -75,15 +78,18 @@ public class ExamplePeakDetector {
 		peaks.calcPeaks();
 
 		Plot plot = new Plot("Peaks", 1024, 512);
-		//plot.plot(spectDiff.getSpectralDifference(), 1, Color.blue);
-		//plot.plot(peaks.getThreshold(), 1, Color.red);
+		// plot.plot(spectDiff.getSpectralDifference(), 1, Color.blue);
+		// plot.plot(peaks.getThreshold(), 1, Color.red);
 		plot.plot(peaks.getPeaks(), 1, Color.green);
 
-		// the samples per pixel has to be equal to the hopping size supplied to
-		// the spectral difference
-		//new PlaybackPlot(plot, 512, new MP3Decoder(new FileInputStream(FILE)));
-		
-		plot.PlayInPlot(512, new MP3Decoder(new FileInputStream(FILE)));
+		/*
+		 * !! the samples per pixel has to be equal to the hopping size supplied
+		 * to the spectral difference!!
+		 */
+
+		// plot.PlayInPlot(512, new MP3Decoder(new FileInputStream(FILE)));
+
+		plot.PlayInPlot(512, new WavDecoder(new FileInputStream(FILE)));
 
 		// plays and updates the marker in the plot
 		// new PlaybackPlot(plot, 512, new WavDecoder(new

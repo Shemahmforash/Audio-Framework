@@ -66,7 +66,7 @@ public class WavDecoder implements AudioDecoder {
 			throw new IllegalArgumentException("expected fmt tag");
 
 		// TODO: adicionar suporte para outro bit-rate
-		// checks it it's 16-bit
+		// checks if it's 16-bit
 		if (inputStream.readIntLittleEndian() != 16)
 			throw new IllegalArgumentException(
 					"expected wave chunk size to be 16");
@@ -78,8 +78,10 @@ public class WavDecoder implements AudioDecoder {
 		sampleRate = inputStream.readIntLittleEndian();
 
 		// TODO: suporte para outros sampling rates
-		/*if (sampleRate != 44100)
-			throw new IllegalArgumentException("Not 44100 sampling rate");*/
+		/*
+		 * if (sampleRate != 44100) throw new
+		 * IllegalArgumentException("Not 44100 sampling rate");
+		 */
 
 		inputStream.readIntLittleEndian();
 		inputStream.readShortLittleEndian();
@@ -94,8 +96,10 @@ public class WavDecoder implements AudioDecoder {
 
 		inputStream.readIntLittleEndian();
 
-		/*it reads until the start of the data tag, the content of this tag will
-		 be read with the function readSample*/
+		/*
+		 * it reads until the start of the data tag, the content of this tag
+		 * will be read with the function readSample
+		 */
 
 	}
 
@@ -139,7 +143,5 @@ public class WavDecoder implements AudioDecoder {
 	public float getSampleRate() {
 		return this.sampleRate;
 	}
-
-	
 
 }

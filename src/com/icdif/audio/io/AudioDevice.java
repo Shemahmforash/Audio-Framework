@@ -143,17 +143,13 @@ public class AudioDevice {
 	}
 
 	/**
-	 * Defines the audio format
+	 * Defines the audio format by default
 	 * 
 	 * @return the audio format
 	 */
 	private AudioFormat getAudioFormat() {
-
-		// TODO: Adicionar mais formatos de audio
-
 		return new AudioFormat(Encoding.PCM_SIGNED, 44100, 16, 1, 2, 44100,
 				false);
-
 	}
 
 	/**
@@ -167,5 +163,8 @@ public class AudioDevice {
 		return new AudioFormat(Encoding.PCM_SIGNED, sampleRate, 16, 1, 2,
 				sampleRate, false);
 	}
+
+	// TODO: Suporte para tocar outro sample size (agora só suporta 16bits), para
+	// stéreo e para outro framerate (agora apenas suporta 2)
 
 }

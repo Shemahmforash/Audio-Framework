@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
-import java.io.Console;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;

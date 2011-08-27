@@ -75,7 +75,9 @@ public class PeakDetector {
 	 * 
 	 * @param spectralFlux
 	 * @param thresholdWindowSize
+	 *            - by default it is 10 samples in each side
 	 * @param multiplier
+	 *            - by default it is 1.6
 	 */
 	public PeakDetector(final ArrayList<Float> spectralFlux,
 			final int thresholdWindowSize, final float multiplier) {
@@ -128,7 +130,7 @@ public class PeakDetector {
 
 	/**
 	 * Fills the array containing the peaks. Any value > 0 in this array is a
-	 * peak. In order to calculate the peaks, it also needs to calculate the
+	 * peak. In order to calculate the peaks, it needs to calculate the
 	 * threshold and the filtered Spectral Flux as intermediate steps.
 	 */
 	public void calcPeaks() {
@@ -154,11 +156,14 @@ public class PeakDetector {
 				peaks.add((float) 0);
 		}
 	}
-	
+
 	/**
 	 * Gets an array containing the time instants (in seconds) of every onset
-	 * @param spectralWindowSize the size of the spectral window, i.e., the hopsize
-	 * @param sampleRate the sample rate of the signal
+	 * 
+	 * @param spectralWindowSize
+	 *            the size of the spectral window, i.e., the hopsize
+	 * @param sampleRate
+	 *            the sample rate of the signal
 	 * @return the time instances of every onset
 	 */
 	public ArrayList<Double> getPeaksAsInstantsInTime(
@@ -166,35 +171,41 @@ public class PeakDetector {
 
 		for (int i = 0; i < this.peaks.size(); i++) {
 			if (this.getPeaks().get(i) > 0) {
-				
-				this.onsets
-						.add((double) (i *  (double) spectralWindowSize / ((double) sampleRate/* * 2 */)));
-			}
 
-			// System.out.println("onset(" + i + ") = " + (double)(i *
-			// 1024.0/44100.0));
+				this.onsets
+						.add((double) (i * (double) spectralWindowSize / ((double) sampleRate)));
+			}
 		}
-		
+
 		return this.onsets;
 
 	}
 
 	/**
 	 * Prints the time instants onsets to a file
+	 * 
 	 * @param filename
 	 */
 	public void printOnsetsToFile(final String filename) {
-		try {
-			FileWriter outFile = new FileWriter(filename);
-			PrintWriter out = new PrintWriter(outFile);
+		if (onsets.size() > 0) {
+			try {
+				FileWriter outFile = new FileWriter(filename);
+				PrintWriter out = new PrintWriter(outFile);
 
-			for (int i = 0; i < this.onsets.size(); i++) {
-				out.println(onsets.get(i));
+				for (int i = 0; i < this.onsets.size(); i++) {
+					out.println(onsets.get(i));
+				}
+
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			
-			out.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} else {
+			System.out.println("The onset array list must be calculated "
+					+ "first by invoking the method CalcPeaks followed "
+					+ "by the method getOnsetsAsInstantsInTime in order "
+					+ "to be able to print the onsets to a file");
+
 		}
 
 	}

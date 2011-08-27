@@ -19,6 +19,10 @@ public class ExampleOnsetsAsTimeInstants {
 
 	public static final int hopSize = 512;
 
+	public static final int thresholdWindowSize = 10;
+
+	public static final float multiplier = 1.6f;
+
 	/**
 	 * @param args
 	 * @throws Exception
@@ -38,15 +42,17 @@ public class ExampleOnsetsAsTimeInstants {
 
 		/*
 		 * instantiates the peak detector, by passing the spectral difference
-		 * already calculated
+		 * already calculated, the threshold window size and the multiplier
 		 */
-		PeakDetector peaks = new PeakDetector(spectDiff.getSpectralDifference());
+		PeakDetector peaks = new PeakDetector(
+				spectDiff.getSpectralDifference(), thresholdWindowSize,
+				multiplier);
 
 		/*
 		 * calculates the peaks
 		 */
 		peaks.calcPeaks();
-		
+
 		System.out.println(peaks.getPeaksAsInstantsInTime(hopSize,
 				(int) decoder.getSampleRate()));
 

@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.io.*;
 
 /**
- * This class receives the SpectralDifference and calculates the Peaks. In order
- * to do this, first it calculates the threshold values, then it chooses from
- * the SpectralDifference the values bigger than the threshold and, finally, it
- * selects the peaks from this last array
+ * This class receives the Detection Function and calculates the Onsets. In
+ * order to do this, first it calculates the threshold values, then it chooses
+ * from the Detection Function the values bigger than the threshold and,
+ * finally, it selects the peaks from this last array
  * 
  * @author wanderer
  * 
@@ -29,9 +29,9 @@ public class PeakDetector {
 	private float multiplier = 1.6f;
 
 	/**
-	 * The spectral Flux that'll be used to calculate the threshold
+	 * The Detection Function values that'll be used to calculate the threshold
 	 */
-	private ArrayList<Float> spectralFlux = new ArrayList<Float>();
+	private ArrayList<Float> detectionFunction = new ArrayList<Float>();
 
 	/**
 	 * The threshold function - it's like a dynamic average
@@ -39,15 +39,15 @@ public class PeakDetector {
 	private ArrayList<Float> threshold = new ArrayList<Float>();
 
 	/**
-	 * It contains the values of the SpectralFlux that are bigger than the
-	 * threshold: threshold.get(i) <= spectralFlux.get(i)
+	 * It contains the values of the Detection Function that are bigger than the
+	 * threshold: threshold.get(i) <= detectionFunction.get(i)
 	 */
-	private ArrayList<Float> filteredSpectralFlux = new ArrayList<Float>();
+	private ArrayList<Float> filteredDetectionFunction = new ArrayList<Float>();
 
 	/**
 	 * This array list contains the peaks, i.e., the values from the
-	 * filteredSpectralFlux that are bigger than the next value. Any value > 0
-	 * in this arraylist is a peak
+	 * filteredDetectionFunction that are bigger than the next value. Any value
+	 * > 0 in this arraylist is a peak
 	 */
 	private ArrayList<Float> peaks = new ArrayList<Float>();
 
@@ -61,11 +61,11 @@ public class PeakDetector {
 	 * Instantiates the class by passing the spectral Flux that'll be used to
 	 * calculate the threshold
 	 * 
-	 * @param spectralFlux
+	 * @param detectionFunction
 	 */
-	public PeakDetector(final ArrayList<Float> spectralFlux) {
+	public PeakDetector(final ArrayList<Float> detectionFunction) {
 
-		this.spectralFlux = spectralFlux;
+		this.detectionFunction = detectionFunction;
 
 	}
 
@@ -73,82 +73,84 @@ public class PeakDetector {
 	 * Instantiates this class by passing the spectral Flux and the parameters
 	 * that'll be used to calculate the threshold and the peaks.
 	 * 
-	 * @param spectralFlux
+	 * @param detectionFunction
 	 * @param thresholdWindowSize
 	 *            - by default it is 10 samples in each side
 	 * @param multiplier
 	 *            - by default it is 1.6
 	 */
-	public PeakDetector(final ArrayList<Float> spectralFlux,
+	public PeakDetector(final ArrayList<Float> detectionFunction,
 			final int thresholdWindowSize, final float multiplier) {
 		super();
 		this.thresholdWindowSize = thresholdWindowSize;
 		this.multiplier = multiplier;
-		this.spectralFlux = spectralFlux;
+		this.detectionFunction = detectionFunction;
 	}
 
 	/**
-	 * For each value in the spectral flux, we calculate the average of the
+	 * For each value in the Detection Function, we calculate the average of the
 	 * values around it. We use a "window" of radius THRESHOLD_WINDOW_SIZE
-	 * around each flux value.
+	 * around each value of the detection function.
 	 */
 	private void calcThreshold() {
-		for (int i = 0; i < spectralFlux.size(); i++) {
+		for (int i = 0; i < detectionFunction.size(); i++) {
 			// the window starts at 0 or at the current value -
 			// THRESHOLD_WINDOW_SIZE
 			int start = Math.max(0, i - thresholdWindowSize);
 
 			// the same here, it ends at the last value, or at the current value
 			// + THRESHOLD_WINDOW_SIZE
-			int end = Math
-					.min(spectralFlux.size() - 1, i + thresholdWindowSize);
+			int end = Math.min(detectionFunction.size() - 1, i
+					+ thresholdWindowSize);
 
 			// we calculate the mean and multiply it by the factor
 			float mean = 0;
 			for (int j = start; j <= end; j++)
-				mean += spectralFlux.get(j);
+				mean += detectionFunction.get(j);
 			mean /= (end - start);
 			threshold.add(mean * multiplier);
 		}
 	}
 
 	/**
-	 * Creates a new array that contains only the spectral flux values that are
-	 * bigger than the threshold. We don't save the spectral flux value in this
-	 * case, we save the difference: spectral flux - threshold, i.e., the
-	 * "magnitude" of the peak.
+	 * Creates a new array that contains only the detection function values that
+	 * are bigger than the threshold. We don't save the detection function value
+	 * in this case, we save the difference: detectionFunction - threshold,
+	 * i.e., the "magnitude" of the peak.
 	 */
-	private void calcFilteredSpectralFlux() {
+	private void calcFilteredDetectionFunction() {
 		for (int i = 0; i < threshold.size(); i++) {
-			if (threshold.get(i) <= spectralFlux.get(i))
-				filteredSpectralFlux
-						.add(spectralFlux.get(i) - threshold.get(i));
+			if (threshold.get(i) <= detectionFunction.get(i))
+				filteredDetectionFunction.add(detectionFunction.get(i)
+						- threshold.get(i));
 			else
-				filteredSpectralFlux.add((float) 0);
+				filteredDetectionFunction.add((float) 0);
 		}
 	}
 
 	/**
 	 * Fills the array containing the peaks. Any value > 0 in this array is a
 	 * peak. In order to calculate the peaks, it needs to calculate the
-	 * threshold and the filtered Spectral Flux as intermediate steps.
+	 * threshold and the filtered Detection Function as intermediate steps.
 	 */
 	public void calcPeaks() {
 
-		// the threshold and filtered spectral flux are needed in order to
+		// the threshold and filtered detectionFunction are needed in order to
 		// calculate the peaks
 		this.calcThreshold();
-		this.calcFilteredSpectralFlux();
+		this.calcFilteredDetectionFunction();
 
 		/*
 		 * TODO: maybe clean up the resulting peak list and remove any peaks
 		 * that are to close together, say < 10ms
 		 */
-		for (int i = 0; i < filteredSpectralFlux.size() - 1; i++) {
-			// in the filtered spectral flux, a peak is a value bigger than the
+		for (int i = 0; i < filteredDetectionFunction.size() - 1; i++) {
+			// in the filtered detection function, a peak is a value bigger than
+			// the
 			// next value
-			if (filteredSpectralFlux.get(i) > filteredSpectralFlux.get(i + 1)) {
-				peaks.add(filteredSpectralFlux.get(i));
+			if (filteredDetectionFunction.get(i) > filteredDetectionFunction
+					.get(i + 1)) {
+				peaks.add(filteredDetectionFunction.get(i));
 				// peaks.add((float)1);
 			}
 
@@ -159,6 +161,8 @@ public class PeakDetector {
 
 	/**
 	 * Gets an array containing the time instants (in seconds) of every onset
+	 * TODO: Cuidado q os parametros a receber aqui podem ser diferentes para
+	 * outras funções de detecção
 	 * 
 	 * @param spectralWindowSize
 	 *            the size of the spectral window, i.e., the hopsize
@@ -214,7 +218,7 @@ public class PeakDetector {
 	 * @return the spectralFlux
 	 */
 	public ArrayList<Float> getSpectralFlux() {
-		return spectralFlux;
+		return detectionFunction;
 	}
 
 	/**
@@ -228,7 +232,7 @@ public class PeakDetector {
 	 * @return the filteredSpectralFlux
 	 */
 	public ArrayList<Float> getFilteredSpectralFlux() {
-		return filteredSpectralFlux;
+		return filteredDetectionFunction;
 	}
 
 	/**

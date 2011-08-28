@@ -27,7 +27,7 @@ public abstract class DetectionFunction {
 	private float[] nextSamples;
 
 	/**
-	 * Temporary array, to be used as an auxiliar
+	 * Temporary array, to be used as an auxiliary
 	 */
 	private float[] tempSamples;
 
@@ -37,7 +37,7 @@ public abstract class DetectionFunction {
 	protected int currentSample = 0;
 
 	/**
-	 * The hopSize (the margin of overlaping sample windows)
+	 * The hopSize (the margin of overlapping sample windows)
 	 */
 	private final int hopSize;
 
@@ -120,25 +120,25 @@ public abstract class DetectionFunction {
 		}
 
 		// copies from samples (starting in the currentSample) to
-		// tempSamples(starting at 0), by an ammount of (samples.length -
+		// tempSamples(starting at 0), by an amount of (samples.length -
 		// currentSample)
 		System.arraycopy(samples, currentSample, tempSamples, 0, samples.length
 				- currentSample);
 
 		// copies from nextSamples (starting at 0) to the tempSamples (starting
-		// at samples.length - currentsample) by an ammount of currentSample
+		// at samples.length - currentsample) by an amount of currentSample
 		System.arraycopy(nextSamples, 0, tempSamples, samples.length
 				- currentSample, currentSample);
 
 		// it performs the forward Fourier Transform in the tempSamples array
-		// (i.e. an array containing the samples from the overlaping area of the
+		// (i.e. an array containing the samples from the overlapping area of the
 		// two windows)
 		fft.forward(tempSamples);
 
-		// it jumps by an ammount defined as the hopping Size
+		// it jumps by an amount defined as the hopping Size
 		currentSample += hopSize;
 
-		// it returns the output of the fourier transform
+		// it returns the output of the Fourier transform
 		return fft.getSpectrum();
 	}
 

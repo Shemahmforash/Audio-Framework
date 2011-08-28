@@ -38,7 +38,7 @@ public class ExampleOnsetsAsTimeInstants {
 		 * Calculates the spectral difference
 		 */
 		SpectralDifference spectDiff = new SpectralDifference(decoder,
-				sampleWindowSize, hopSize, true, (int) decoder.getSampleRate());
+				sampleWindowSize, hopSize, true);
 
 		/*
 		 * instantiates the peak detector, by passing the spectral difference

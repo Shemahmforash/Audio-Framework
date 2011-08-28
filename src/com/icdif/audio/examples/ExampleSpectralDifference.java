@@ -47,7 +47,7 @@ public class ExampleSpectralDifference {
 		int hop = 512;
 
 		SpectralDifference spectDiff = new SpectralDifference(decoder,
-				windowSize, hop, true, 44100);
+				windowSize, hop, true);
 
 		Plot plot = new Plot("Spectral Difference", 800, 600);
 

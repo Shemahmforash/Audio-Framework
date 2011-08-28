@@ -46,6 +46,14 @@ public abstract class DetectionFunction {
 	 */
 	private final FFT fft;
 
+	protected class RealImgFFT {
+		public float[] real;
+
+		public float[] imaginary;
+	}
+
+	protected RealImgFFT componentsFFT;
+
 	/**
 	 * Initiates this class, by supplying the parameters needed
 	 * 
@@ -131,7 +139,8 @@ public abstract class DetectionFunction {
 				- currentSample, currentSample);
 
 		// it performs the forward Fourier Transform in the tempSamples array
-		// (i.e. an array containing the samples from the overlapping area of the
+		// (i.e. an array containing the samples from the overlapping area of
+		// the
 		// two windows)
 		fft.forward(tempSamples);
 
@@ -140,6 +149,53 @@ public abstract class DetectionFunction {
 
 		// it returns the output of the Fourier transform
 		return fft.getSpectrum();
+	}
+
+	/**
+	 * Calculates the Fourier Transform of the samples, by using the hoping
+	 * margin defined in the constructor and returning the real and imaginary
+	 * parts of the transform or null, when there is no more data to read.
+	 * 
+	 * @return The Real and Imaginary part of the FFT or null
+	 */
+	public RealImgFFT nextPhase() {
+
+		// when the currentSample is in the following window, it exchanges the
+		// place of the following and the current window
+		if (currentSample >= samples.length) {
+			float[] tmp = nextSamples;
+			nextSamples = samples;
+			samples = tmp;
+			// if there are no more samples to read, it quits this method
+			if (decoder.readSamples(nextSamples) == 0)
+				return null;
+			currentSample -= samples.length;
+		}
+
+		// copies from samples (starting in the currentSample) to
+		// tempSamples(starting at 0), by an amount of (samples.length -
+		// currentSample)
+		System.arraycopy(samples, currentSample, tempSamples, 0, samples.length
+				- currentSample);
+
+		// copies from nextSamples (starting at 0) to the tempSamples (starting
+		// at samples.length - currentsample) by an amount of currentSample
+		System.arraycopy(nextSamples, 0, tempSamples, samples.length
+				- currentSample, currentSample);
+
+		// it performs the forward Fourier Transform in the tempSamples array
+		// (i.e. an array containing the samples from the overlapping area of
+		// the
+		// two windows)
+		fft.forward(tempSamples);
+
+		// it jumps by an amount defined as the hopping Size
+		currentSample += hopSize;
+
+		componentsFFT.imaginary = fft.imag;
+		componentsFFT.real = fft.real;
+
+		return componentsFFT;
 	}
 
 	/**

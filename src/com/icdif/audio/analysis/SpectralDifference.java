@@ -17,7 +17,7 @@ import com.icdif.audio.io.AudioDecoder;
  * @author wanderer
  * 
  */
-public class SpectralDifference {
+public class SpectralDifference extends DetectionFunction {
 
 	/**
 	 * The audio decoder in order to transform the audio data into an array of

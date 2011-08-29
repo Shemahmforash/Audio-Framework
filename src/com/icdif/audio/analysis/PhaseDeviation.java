@@ -157,8 +157,19 @@ public class PhaseDeviation extends DetectionFunction {
 
 	}
 
+	/**
+	 * deprecated, use getDetectionFunction() instead
+	 * @return
+	 */
 	public ArrayList<Float> getPD() {
 		return PD;
 	}
+
+	@Override
+	public ArrayList<Float> getDetectionFunction() {
+		return PD;
+	}
+	
+	
 
 }

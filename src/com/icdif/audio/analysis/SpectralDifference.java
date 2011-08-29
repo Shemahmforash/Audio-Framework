@@ -80,13 +80,17 @@ public class SpectralDifference extends DetectionFunction {
 	}
 
 	/**
-	 * Gets the Spectral Difference (a function that measures how quickly the
-	 * power spectrum of a signal is changing)
+	 * Deprecated, use getDetectionFunctio() instead
 	 * 
 	 * @return the spectralDifference
 	 */
 	public ArrayList<Float> getSpectralDifference() {
-		System.out.println("Total Spec Diff: " + spectralDifference.size());
+		// System.out.println("Total Spec Diff: " + spectralDifference.size());
+		return spectralDifference;
+	}
+
+	@Override
+	public ArrayList<Float> getDetectionFunction() {
 		return spectralDifference;
 	}
 

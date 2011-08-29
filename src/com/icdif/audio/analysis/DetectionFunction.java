@@ -3,6 +3,8 @@
  */
 package com.icdif.audio.analysis;
 
+import java.util.ArrayList;
+
 import com.icdif.audio.io.AudioDecoder;
 
 /**
@@ -206,5 +208,12 @@ public abstract class DetectionFunction {
 	public FFT getFft() {
 		return fft;
 	}
+	
+	/**
+	 * Abstract class that returns the values of the detection function
+	 * @return the values of the detection function
+	 */
+	public abstract ArrayList<Float> getDetectionFunction();
+	
 
 }

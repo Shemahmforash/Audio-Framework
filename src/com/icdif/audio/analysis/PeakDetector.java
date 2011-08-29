@@ -138,11 +138,11 @@ public class PeakDetector {
 		// the threshold and filtered detectionFunction are needed in order to
 		// calculate the peaks
 		this.calcThreshold();
-		System.out.println("threshold:");
-		System.out.println(this.threshold);
+		//System.out.println("threshold:");
+		//System.out.println(this.threshold);
 		this.calcFilteredDetectionFunction();
-		System.out.println("Filtered detection function:");
-		System.out.println(this.filteredDetectionFunction);
+		//System.out.println("Filtered detection function:");
+		//System.out.println(this.filteredDetectionFunction);
 
 		/*
 		 * TODO: maybe clean up the resulting peak list and remove any peaks

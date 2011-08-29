@@ -13,7 +13,7 @@ import com.icdif.audio.io.WavDecoder;
 public class ExampleTimeOnsetsDirectory {
 
 	public static final File DIRECTORY = new File(
-			"/home/wanderer/Área de Trabalho/corpus_wav/");
+			"/home/wanderer/Área de Trabalho/corpus/");
 
 	/**
 	 * @param args

@@ -80,11 +80,11 @@ public class ExampleSpectralDifference {
 		 * new FileInputStream(FILE)));
 		 */
 
-		// plot.PlayInPlot(hop, new MP3Decoder(new FileInputStream(FILE)));
+		plot.PlayInPlot(hop, new MP3Decoder(new FileInputStream(FILE)));
 
 		// float miii = 512f;
 
-		plot.PlayInPlot(hop, new WavDecoder(new FileInputStream(FILE)));
+		//plot.PlayInPlot(hop, new WavDecoder(new FileInputStream(FILE)));
 
 	}
 

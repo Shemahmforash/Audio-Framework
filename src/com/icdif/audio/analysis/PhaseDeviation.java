@@ -62,15 +62,16 @@ public class PhaseDeviation extends DetectionFunction {
 			 * compares three adjacent bins
 			 */
 			for (int i = 0; i < components.real.length; i++) {
-				if (i == 0) {
+				if (previousPhase==null && antePreviousPhase == null) {
 					phaseDeviation += Math.sqrt(phase[i] * phase[i]);
-				} else if (i == 1) {
-					phaseDeviation += Math.sqrt((phase[i] - 2 * phase[i - 1])
-							* (phase[i] - 2 * phase[i - 1]));
+				} else if (previousPhase != null && antePreviousPhase == null) {
+					phaseDeviation += Math
+							.sqrt((phase[i] - 2 * previousPhase[i])
+									* (phase[i] - 2 * previousPhase[i]));
 				} else {
 					phaseDeviation += Math
-							.sqrt((phase[i] - 2 * phase[i - 1] - phase[i - 2])
-									* (phase[i] - 2 * phase[i - 1] - phase[i - 2]));
+							.sqrt((phase[i] - 2 * previousPhase[i] - antePreviousPhase[i])
+									* (phase[i] - 2 * previousPhase[i] - antePreviousPhase[i]));
 				}
 
 			}
@@ -79,6 +80,13 @@ public class PhaseDeviation extends DetectionFunction {
 			 * Adds the phase deviation to the list
 			 */
 			PD.add((float) phaseDeviation / phase.length);
+			
+			if(previousPhase == null) {
+				previousPhase = new double[phase.length];
+			}
+			if(antePreviousPhase == null) {
+				antePreviousPhase = new double[phase.length];
+			}
 
 			// the previous phase in the following iteration is the
 			// current phase of this iteration
@@ -86,8 +94,10 @@ public class PhaseDeviation extends DetectionFunction {
 
 			// the antepreviousphase in the next iteration is the previous phase
 			// in this iteration
-			System.arraycopy(previousPhase, 0, antePreviousPhase, 0,
-					phase.length);
+			if (previousPhase != null) {
+				System.arraycopy(previousPhase, 0, antePreviousPhase, 0,
+						phase.length);
+			}
 
 		} while ((components = this.nextPhase()) != null);
 	}
@@ -145,6 +155,10 @@ public class PhaseDeviation extends DetectionFunction {
 
 		return phase;
 
+	}
+
+	public ArrayList<Float> getPD() {
+		return PD;
 	}
 
 }

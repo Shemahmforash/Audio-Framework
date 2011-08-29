@@ -52,7 +52,7 @@ public abstract class DetectionFunction {
 		public float[] imaginary;
 	}
 
-	protected RealImgFFT componentsFFT;
+	protected RealImgFFT componentsFFT = new RealImgFFT();
 
 	/**
 	 * Initiates this class, by supplying the parameters needed

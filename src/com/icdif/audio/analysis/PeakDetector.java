@@ -138,7 +138,11 @@ public class PeakDetector {
 		// the threshold and filtered detectionFunction are needed in order to
 		// calculate the peaks
 		this.calcThreshold();
+		System.out.println("threshold:");
+		System.out.println(this.threshold);
 		this.calcFilteredDetectionFunction();
+		System.out.println("Filtered detection function:");
+		System.out.println(this.filteredDetectionFunction);
 
 		/*
 		 * TODO: maybe clean up the resulting peak list and remove any peaks
@@ -217,7 +221,7 @@ public class PeakDetector {
 	/**
 	 * @return the spectralFlux
 	 */
-	public ArrayList<Float> getSpectralFlux() {
+	public ArrayList<Float> getDetectionFunction() {
 		return detectionFunction;
 	}
 
@@ -236,10 +240,21 @@ public class PeakDetector {
 	}
 
 	/**
+	 * An array containing the peaks and zeros
+	 * 
 	 * @return the peaks
 	 */
 	public ArrayList<Float> getPeaks() {
 		return peaks;
+	}
+
+	/**
+	 * Gets the onsets as instants in time
+	 * 
+	 * @return the array list of onsets
+	 */
+	public ArrayList<Double> getOnsets() {
+		return onsets;
 	}
 
 }

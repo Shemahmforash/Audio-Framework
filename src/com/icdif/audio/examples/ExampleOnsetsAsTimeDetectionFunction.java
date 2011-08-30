@@ -25,12 +25,24 @@ public class ExampleOnsetsAsTimeDetectionFunction {
 	public static final File DIRECTORY = new File(
 			"/home/wanderer/Área de Trabalho/corpus/");
 
+	/**
+	 * An enumerator with the available onset detection methods
+	 * 
+	 * @author wanderer
+	 * 
+	 */
 	public enum onsetMethodology {
 		SpectralFlux, PhaseDeviation
 	}
 
+	/**
+	 * Define the methodology
+	 */
 	public static onsetMethodology methodology = onsetMethodology.PhaseDeviation;
 
+	/*
+	 * Parameters to use in the calculus
+	 */
 	public static final int sampleWindowSize = 1024;
 
 	public static final int hopSize = 512;
@@ -45,6 +57,8 @@ public class ExampleOnsetsAsTimeDetectionFunction {
 		if (children == null) {
 			System.out.println("The directory is empty or does not exist");
 		} else {
+			// runs the files in the directory and calculates the onsets to all
+			// of them
 			for (int i = 0; i < children.length; i++) {
 				// Get filename of file or directory
 				String filename = children[i];
@@ -62,8 +76,12 @@ public class ExampleOnsetsAsTimeDetectionFunction {
 					decoder = new MP3Decoder(new FileInputStream(DIRECTORY
 							+ "/" + filename));
 				}
-				
-				if(decoder == null) {
+
+				/**
+				 * If the file has no mp3 or wav extension, move to the next
+				 * file
+				 */
+				if (decoder == null) {
 					continue;
 				}
 
@@ -87,10 +105,10 @@ public class ExampleOnsetsAsTimeDetectionFunction {
 					break;
 				}
 
-				/*
-				 * instantiates the peak detector, by passing the spectral
-				 * difference already calculated, the threshold window size and
-				 * the multiplier
+				/**
+				 * instantiates the peak detector, by passing the values of the
+				 * detection function already calculated, the threshold window
+				 * size and the multiplier
 				 */
 				PeakDetector peaks = new PeakDetector(
 						onsetDetector.getDetectionFunction(),
@@ -107,14 +125,56 @@ public class ExampleOnsetsAsTimeDetectionFunction {
 				 */
 				ArrayList<Double> onsets = peaks.getPeaksAsInstantsInTime(
 						hopSize, (int) decoder.getSampleRate());
-				
+
 				System.out.println("Onsets:");
 				System.out.println(onsets);
 
-				peaks.printOnsetsToFile(DIRECTORY + "/onsets/" + filename
-						+ ".txt");
+				// prints the onsets to a file with a same name but with
+				// extension .txt
+				peaks.printOnsetsToFile(DIRECTORY + "/onsets/"
+						+ replaceFileExtension(filename, ".txt"));
 
 			}
 		}
+	}
+
+	/**
+	 * Auxiliary method that gets the file extension of the supplied file name
+	 * 
+	 * @param fileName
+	 *            file Name
+	 * @return the extension of the file name
+	 */
+	public static String getFileExtension(String fileName) {
+		String ext = "";
+		int i = fileName.lastIndexOf('.');
+		if (i > 0 && i < fileName.length() - 1) {
+			ext = fileName.substring(i + 1).toLowerCase();
+		}
+		return ext;
+	}
+
+	/**
+	 * Auxiliary method that receives a filename and an extension and replaces
+	 * the current file extension with the new one
+	 * 
+	 * @param fileName
+	 * @param newExtension
+	 * @return the filename with the new extension
+	 */
+	public static String replaceFileExtension(String fileName,
+			String newExtension) {
+
+		String ext = getFileExtension(fileName);
+		String newFileName;
+
+		if (ext.equals("")) {
+			newFileName = fileName + "." + newExtension;
+		} else {
+			newFileName = fileName.replaceAll("." + ext, newExtension);
+		}
+
+		return newFileName;
+
 	}
 }

@@ -48,13 +48,15 @@ public abstract class DetectionFunction {
 	 */
 	private final FFT fft;
 
-	protected class RealImgFFT {
+	protected class FFTComponents {
 		public float[] real;
 
 		public float[] imaginary;
+		
+		public float[] spectrum;
 	}
 
-	protected RealImgFFT componentsFFT = new RealImgFFT();
+	protected FFTComponents componentsFFT = new FFTComponents();
 
 	/**
 	 * Initiates this class, by supplying the parameters needed
@@ -160,7 +162,7 @@ public abstract class DetectionFunction {
 	 * 
 	 * @return The Real and Imaginary part of the FFT or null
 	 */
-	public RealImgFFT nextPhase() {
+	public FFTComponents nextPhase() {
 
 		// when the currentSample is in the following window, it exchanges the
 		// place of the following and the current window

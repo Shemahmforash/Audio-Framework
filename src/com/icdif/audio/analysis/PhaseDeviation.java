@@ -42,7 +42,7 @@ public class PhaseDeviation extends DetectionFunction {
 	 * Calculate and sets the phase deviation
 	 */
 	public void calcPhaseDeviation() {
-		RealImgFFT components = this.nextPhase();
+		FFTComponents components = this.nextPhase();
 		double[] phase = null;
 		double[] previousPhase = null;
 		double[] antePreviousPhase = null;
@@ -112,7 +112,7 @@ public class PhaseDeviation extends DetectionFunction {
 	 * @return a double array containing the phase in each frequency for a
 	 *         particular sample package
 	 */
-	private double[] calcPhaseFromObject(final RealImgFFT component) {
+	private double[] calcPhaseFromObject(final FFTComponents component) {
 		double[] phase = new double[component.real.length];
 
 		for (int i = 0; i < component.real.length; i++) {

@@ -138,11 +138,11 @@ public class PeakDetector {
 		// the threshold and filtered detectionFunction are needed in order to
 		// calculate the peaks
 		this.calcThreshold();
-		//System.out.println("threshold:");
-		//System.out.println(this.threshold);
+		// System.out.println("threshold:");
+		// System.out.println(this.threshold);
 		this.calcFilteredDetectionFunction();
-		//System.out.println("Filtered detection function:");
-		//System.out.println(this.filteredDetectionFunction);
+		// System.out.println("Filtered detection function:");
+		// System.out.println(this.filteredDetectionFunction);
 
 		/*
 		 * TODO: maybe clean up the resulting peak list and remove any peaks
@@ -193,6 +193,7 @@ public class PeakDetector {
 	 * Prints the time instants onsets to a file
 	 * 
 	 * @param filename
+	 *            the full path of the file where to write
 	 */
 	public void printOnsetsToFile(final String filename) {
 		if (onsets.size() > 0) {

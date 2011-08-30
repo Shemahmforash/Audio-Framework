@@ -104,7 +104,7 @@ public class PhaseDeviation extends DetectionFunction {
 			 * and, for the weighting, the formula 2.4 in Simon Dixon
 			 * "Onset Detection Revisited"
 			 */
-			for (int i = 0; i < components.real.length; i++) {
+			for (int i = 0; i < components.spectrum.length; i++) {
 				if (useWeighting == false) {
 					if (previousPhase == null && antePreviousPhase == null) {
 						phaseDeviation += Math.sqrt(phase[i] * phase[i]);

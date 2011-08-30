@@ -32,7 +32,7 @@ public class ExampleOnsetsAsTimeDetectionFunction {
 	 * 
 	 */
 	public enum onsetMethodology {
-		SpectralFlux, PhaseDeviation
+		SpectralFlux, PhaseDeviation, WeightedPhaseDeviation
 	}
 
 	/**
@@ -97,6 +97,10 @@ public class ExampleOnsetsAsTimeDetectionFunction {
 				case PhaseDeviation:
 					onsetDetector = new PhaseDeviation(decoder,
 							sampleWindowSize, hopSize, true);
+					break;
+				case WeightedPhaseDeviation:
+					onsetDetector = new PhaseDeviation(decoder,
+							sampleWindowSize, hopSize, true, true);
 					break;
 				default:
 					// by default one uses the spectral flux

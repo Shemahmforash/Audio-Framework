@@ -196,8 +196,13 @@ public abstract class DetectionFunction {
 		// it jumps by an amount defined as the hopping Size
 		currentSample += hopSize;
 
-		componentsFFT.imaginary = fft.imag;
-		componentsFFT.real = fft.real;
+		/**
+		 * Sets the attributes of the inner class
+		 */
+		componentsFFT.imaginary = fft.getImaginaryPart();
+		componentsFFT.real = fft.getRealPart();
+		
+		componentsFFT.spectrum = fft.getSpectrum();
 
 		return componentsFFT;
 	}

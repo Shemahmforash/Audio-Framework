@@ -16,12 +16,12 @@ import com.icdif.audio.io.WavDecoder;
 
 public class ExampleOnsetDetectionChooseMethodology {
 
-	public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/6-three.wav";
+	public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/8-ambrielb.wav";
 
 	/**
 	 * Define the methodology
 	 */
-	public static OnsetMethodology methodology = OnsetMethodology.PhaseDeviation;
+	public static OnsetMethodology methodology = OnsetMethodology.NormalisedWeightedPhaseDeviation;
 
 	public static final int sampleWindowSize = 1024;
 
@@ -29,7 +29,7 @@ public class ExampleOnsetDetectionChooseMethodology {
 
 	public static final int thresholdWindowSize = 10;
 
-	public static final float multiplier = 0.95f;
+	public static final float multiplier = 1.3f;
 
 	/**
 	 * @param args
@@ -65,6 +65,10 @@ public class ExampleOnsetDetectionChooseMethodology {
 			onsetDetector = new PhaseDeviation(decoder, sampleWindowSize,
 					hopSize, true, true);
 			break;
+		case NormalisedWeightedPhaseDeviation:
+			onsetDetector = new PhaseDeviation(decoder, sampleWindowSize,
+					hopSize, true, true, true);
+			break;
 		default:
 			// by default one uses the spectral flux
 			onsetDetector = new SpectralDifference(decoder, sampleWindowSize,
@@ -94,8 +98,10 @@ public class ExampleOnsetDetectionChooseMethodology {
 
 		Plot plot = new Plot(methodology.toString() + "(multiplier = "
 				+ multiplier + ")", 800, 600);
-		plot.plot(onsetDetector.getDetectionFunction(), 1, Color.green);
+		
 		plot.plot(peaks.getThreshold(), 1, Color.red);
+
+		plot.plot(onsetDetector.getDetectionFunction(), 1, Color.green);
 
 		plot.PlayInPlot(hopSize, new WavDecoder(new FileInputStream(FILE)));
 

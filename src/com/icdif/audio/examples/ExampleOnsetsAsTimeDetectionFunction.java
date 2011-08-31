@@ -92,6 +92,10 @@ public class ExampleOnsetsAsTimeDetectionFunction {
 					onsetDetector = new PhaseDeviation(decoder,
 							sampleWindowSize, hopSize, true, true);
 					break;
+				case NormalisedWeightedPhaseDeviation:
+					onsetDetector = new PhaseDeviation(decoder,
+							sampleWindowSize, hopSize, true, true, true);
+					break;
 				default:
 					// by default one uses the spectral flux
 					onsetDetector = new SpectralDifference(decoder,

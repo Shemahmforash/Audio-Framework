@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import com.icdif.audio.analysis.DetectionFunction;
+import com.icdif.audio.analysis.HighFrequencyContent;
 import com.icdif.audio.analysis.OnsetMethodology;
 import com.icdif.audio.analysis.PeakDetector;
 import com.icdif.audio.analysis.PhaseDeviation;
@@ -96,6 +97,9 @@ public class ExampleOnsetsAsTimeDetectionFunction {
 					onsetDetector = new PhaseDeviation(decoder,
 							sampleWindowSize, hopSize, true, true, true);
 					break;
+				case HighFrequencyContent:
+					onsetDetector = new HighFrequencyContent(decoder,
+							sampleWindowSize, hopSize, true);
 				default:
 					// by default one uses the spectral flux
 					onsetDetector = new SpectralDifference(decoder,

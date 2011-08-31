@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import com.icdif.audio.analysis.DetectionFunction;
+import com.icdif.audio.analysis.HighFrequencyContent;
 import com.icdif.audio.analysis.OnsetMethodology;
 import com.icdif.audio.analysis.PeakDetector;
 import com.icdif.audio.analysis.PhaseDeviation;
@@ -16,8 +17,9 @@ import com.icdif.audio.io.WavDecoder;
 
 public class ExampleOnsetDetectionChooseMethodology {
 
-	//public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/8-ambrielb.wav";
-	public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/6-three.wav";
+	public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/8-ambrielb.wav";
+	// public static final String FILE =
+	// "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/6-three.wav";
 
 	/**
 	 * Define the methodology
@@ -70,6 +72,9 @@ public class ExampleOnsetDetectionChooseMethodology {
 			onsetDetector = new PhaseDeviation(decoder, sampleWindowSize,
 					hopSize, true, true, true);
 			break;
+		case HighFrequencyContent:
+			onsetDetector = new HighFrequencyContent(decoder, sampleWindowSize,
+					hopSize, true);
 		default:
 			// by default one uses the spectral flux
 			onsetDetector = new SpectralDifference(decoder, sampleWindowSize,
@@ -99,7 +104,7 @@ public class ExampleOnsetDetectionChooseMethodology {
 
 		Plot plot = new Plot(methodology.toString() + "(multiplier = "
 				+ multiplier + ")", 800, 600);
-		
+
 		plot.plot(onsetDetector.getDetectionFunction(), 1, Color.green);
 		plot.plot(peaks.getThreshold(), 1, Color.red);
 

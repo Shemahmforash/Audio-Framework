@@ -209,6 +209,61 @@ public abstract class DetectionFunction {
 	}
 
 	/**
+	 * Using the calcPhase method it calculates the phase array for all the
+	 * frequencies in a bin of the output of the FFT
+	 * 
+	 * @param component
+	 *            - an object containing the real and imaginary part of the FFT
+	 *            transform.
+	 * @return an array of doubles containing the phase in each frequency for a
+	 *         particular sample frame
+	 */
+	protected double[] calcPhaseFromComponents(final FFTComponents component) {
+		double[] phase = new double[component.real.length];
+
+		for (int i = 0; i < component.real.length; i++) {
+			phase[i] = calcPhase(component.real[i], component.imaginary[i]);
+		}
+
+		return phase;
+
+	}
+
+	/**
+	 * Calculates the phase as the arctan between the imaginary and real part of
+	 * the FFT and taking into account the quadrant
+	 * 
+	 * @param real
+	 * @param imag
+	 * @return
+	 */
+	protected double calcPhase(final float real, final float imag) {
+		double phase;
+
+		if (imag == 0 && real == 0) {
+			phase = 0.0f;
+		} else {
+			phase = Math.atan(imag / real);
+		}
+
+		/*
+		 * Now one must consider the quadrant
+		 */
+		if (real < 0.0 && imag == 0.0) {
+			phase = Math.PI;
+		} else if (real < 0.0 && imag == -0.0) {
+			phase = -Math.PI;
+		} else if (real < 0.0 && imag > 0.0) {
+			phase += Math.PI;
+		} else if (real < 0.0 && imag < 0.0) {
+			phase += -Math.PI;
+		}
+
+		return phase;
+
+	}
+
+	/**
 	 * Gets the instance of the FFT used for calculus
 	 * 
 	 * @return the FFT instance used for calculus

@@ -140,7 +140,7 @@ public class PhaseDeviation extends DetectionFunction {
 			phase = calcPhaseFromObject(components);
 
 			double phaseDeviation = 0;
-			
+
 			/**
 			 * used to normalize
 			 */
@@ -209,6 +209,9 @@ public class PhaseDeviation extends DetectionFunction {
 				PD.add((float) (phaseDeviation / totalSpectrum));
 			}
 
+			/**
+			 * prepare the data for the next iteration
+			 */
 			if (previousPhase == null) {
 				previousPhase = new double[phase.length];
 			}

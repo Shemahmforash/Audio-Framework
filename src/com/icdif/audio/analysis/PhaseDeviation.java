@@ -22,6 +22,14 @@ public class PhaseDeviation extends DetectionFunction {
 	private boolean useWeighting = false;
 
 	/**
+	 * Weather to use Normalization in the weighted phase deviation method
+	 * (According to Dixon's paper ONSET DETECTION REVISITED). If true one
+	 * obtains the normalised weighted phase deviation method (NWPD). Note: Only
+	 * possible if useWeighting = true;
+	 */
+	private boolean useNormalization = false;
+
+	/**
 	 * The Phase Deviation (PD) (it'll be calculated with the constructor)
 	 */
 	private ArrayList<Float> PD = new ArrayList<Float>();
@@ -77,6 +85,22 @@ public class PhaseDeviation extends DetectionFunction {
 
 	}
 
+	public PhaseDeviation(AudioDecoder decoder, final int sampleWindowSize,
+			final int hopSize, final boolean isHamming,
+			final boolean useWeighting, final boolean useNormalization) {
+		
+		super(decoder, sampleWindowSize, hopSize, isHamming);
+		
+		if(useWeighting == false) {
+			System.out.println("Weighting needs to be true. Going back to the Phase Deviation method without weighting and without normalization.");
+		} else {
+			this.useWeighting = useWeighting;
+			this.useNormalization = useNormalization;
+		}
+		
+		this.calcPhaseDeviation();
+	}
+
 	/**
 	 * Calculate and sets the phase deviation
 	 */
@@ -85,6 +109,12 @@ public class PhaseDeviation extends DetectionFunction {
 		double[] phase = null;
 		double[] previousPhase = null;
 		double[] antePreviousPhase = null;
+		
+		/**
+		 * used to normalize
+		 */
+		float totalSpectrum = 0;
+		
 
 		do {
 
@@ -139,15 +169,25 @@ public class PhaseDeviation extends DetectionFunction {
 										* components.spectrum[i]
 										* (phase[i] - 2 * previousPhase[i] - antePreviousPhase[i]));
 					}
+					
+				}
+				if(useNormalization == true) {
+					totalSpectrum += Math.sqrt(components.spectrum[i]*components.spectrum[i]);
 				}
 
 			}
 
 			/*
 			 * Adds the phase deviation to the list, dividing the result
-			 * obtained with the number of bins
+			 * obtained with the number of bins or doing the normalization
 			 */
-			PD.add((float) phaseDeviation / components.spectrum.length);
+			if(useNormalization == false) {
+				PD.add((float) phaseDeviation / components.spectrum.length);
+			}
+			else {
+				PD.add((float) (phaseDeviation / totalSpectrum));
+			}
+			
 
 			if (previousPhase == null) {
 				previousPhase = new double[phase.length];

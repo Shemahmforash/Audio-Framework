@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import com.icdif.audio.analysis.DetectionFunction;
+import com.icdif.audio.analysis.OnsetMethodology;
 import com.icdif.audio.analysis.PeakDetector;
 import com.icdif.audio.analysis.PhaseDeviation;
 import com.icdif.audio.analysis.SpectralDifference;
@@ -22,23 +23,12 @@ import com.icdif.audio.io.WavDecoder;
  */
 public class ExampleOnsetsAsTimeDetectionFunction {
 
-	public static final File DIRECTORY = new File(
-			"/home/wanderer/Área de Trabalho/corpus/");
-
-	/**
-	 * An enumerator with the available onset detection methods
-	 * 
-	 * @author wanderer
-	 * 
-	 */
-	public enum onsetMethodology {
-		SpectralFlux, PhaseDeviation, WeightedPhaseDeviation
-	}
+	public static final File DIRECTORY = new File("/home/wanderer/corpus/");
 
 	/**
 	 * Define the methodology
 	 */
-	public static onsetMethodology methodology = onsetMethodology.PhaseDeviation;
+	public static OnsetMethodology methodology = OnsetMethodology.WeightedPhaseDeviation;
 
 	/*
 	 * Parameters to use in the calculus
@@ -49,7 +39,7 @@ public class ExampleOnsetsAsTimeDetectionFunction {
 
 	public static final int thresholdWindowSize = 10;
 
-	public static final float multiplier = 1.05f;
+	public static final float multiplier = 1.3f;
 
 	public static void main(String[] args) throws FileNotFoundException,
 			Exception {

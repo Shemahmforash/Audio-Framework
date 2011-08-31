@@ -39,8 +39,9 @@ public class ExampleOnsetsAsTimeInstants {
 		 */
 		SpectralDifference spectDiff = new SpectralDifference(decoder,
 				sampleWindowSize, hopSize, true);
-		
-		System.out.println("SF:");
+
+		System.out.println("SF (size = "
+				+ spectDiff.getSpectralDifference().size() + "):");
 		System.out.println(spectDiff.getSpectralDifference());
 
 		/*

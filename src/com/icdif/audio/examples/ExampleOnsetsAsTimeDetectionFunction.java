@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import com.icdif.audio.analysis.ComplexDomain;
 import com.icdif.audio.analysis.DetectionFunction;
 import com.icdif.audio.analysis.HighFrequencyContent;
 import com.icdif.audio.analysis.OnsetMethodology;
@@ -100,6 +101,10 @@ public class ExampleOnsetsAsTimeDetectionFunction {
 				case HighFrequencyContent:
 					onsetDetector = new HighFrequencyContent(decoder,
 							sampleWindowSize, hopSize, true);
+				case ComplexDomain:
+					onsetDetector = new ComplexDomain(decoder,
+							sampleWindowSize, hopSize, true);
+					break;
 				default:
 					// by default one uses the spectral flux
 					onsetDetector = new SpectralDifference(decoder,

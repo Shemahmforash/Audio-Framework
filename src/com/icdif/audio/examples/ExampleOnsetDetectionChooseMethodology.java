@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import com.icdif.audio.analysis.ComplexDomain;
 import com.icdif.audio.analysis.DetectionFunction;
 import com.icdif.audio.analysis.HighFrequencyContent;
 import com.icdif.audio.analysis.OnsetMethodology;
@@ -17,14 +18,14 @@ import com.icdif.audio.io.WavDecoder;
 
 public class ExampleOnsetDetectionChooseMethodology {
 
-	public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/8-ambrielb.wav";
 	// public static final String FILE =
-	// "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/6-three.wav";
+	// "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/8-ambrielb.wav";
+	public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/6-three.wav";
 
 	/**
 	 * Define the methodology
 	 */
-	public static OnsetMethodology methodology = OnsetMethodology.SpectralFlux;
+	public static OnsetMethodology methodology = OnsetMethodology.ComplexDomain;
 
 	public static final int sampleWindowSize = 1024;
 
@@ -75,6 +76,11 @@ public class ExampleOnsetDetectionChooseMethodology {
 		case HighFrequencyContent:
 			onsetDetector = new HighFrequencyContent(decoder, sampleWindowSize,
 					hopSize, true);
+			break;
+		case ComplexDomain:
+			onsetDetector = new ComplexDomain(decoder, sampleWindowSize,
+					hopSize, true, true);
+			break;
 		default:
 			// by default one uses the spectral flux
 			onsetDetector = new SpectralDifference(decoder, sampleWindowSize,

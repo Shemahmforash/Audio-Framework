@@ -1,6 +1,12 @@
 This is an Audio Framework built in java that aims at finding the onsets in an audio file from the processment of its the raw audio data (mp3/wav).
 
-In order to detect the onsets it can use a method called Spectral Difference/Spectral Flux or a method called Phase Deviation, but in the future it is intended to implement other methods.
+In order to detect the onsets it can use one of the following methods:
+- Spectral Difference/Spectral Flux
+- Phase Deviation
+- Weighted Phase Deviation
+- Normalised Weighted Phase Deviation
+
+but in the future it is intended to implement other methods.
 
 It can extract the onsets from an audio file or from a list of audio files and export them to text files containing the time instants at which the onsets occur and to plot both the raw audio and the processed data in order for one to have an idea if it's working properly.
 

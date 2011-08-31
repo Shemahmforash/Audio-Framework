@@ -104,6 +104,10 @@ public class PhaseDeviation extends DetectionFunction {
 			 * and, for the weighting, the formula 2.4 in Simon Dixon
 			 * "Onset Detection Revisited"
 			 */
+			/*
+			 * TODO:Check if running only to spectrum.length and using the
+			 * imaginary/real results only to this index is correct
+			 */
 			for (int i = 0; i < components.spectrum.length; i++) {
 				if (useWeighting == false) {
 					if (previousPhase == null && antePreviousPhase == null) {
@@ -143,7 +147,7 @@ public class PhaseDeviation extends DetectionFunction {
 			 * Adds the phase deviation to the list, dividing the result
 			 * obtained with the number of bins
 			 */
-			PD.add((float) phaseDeviation / phase.length);
+			PD.add((float) phaseDeviation / components.spectrum.length);
 
 			if (previousPhase == null) {
 				previousPhase = new double[phase.length];
@@ -173,8 +177,8 @@ public class PhaseDeviation extends DetectionFunction {
 	 * @param component
 	 *            - an object containing the real and imaginary part of the FFT
 	 *            transform.
-	 * @return a double array containing the phase in each frequency for a
-	 *         particular sample package
+	 * @return an array of doubles containing the phase in each frequency for a
+	 *         particular sample frame
 	 */
 	private double[] calcPhaseFromObject(final FFTComponents component) {
 		double[] phase = new double[component.real.length];

@@ -57,6 +57,7 @@ public class SpectralDifference extends DetectionFunction {
 
 		float[] spectrum = this.nextSpectrum();
 		float[] lastSpectrum = new float[spectrum.length];
+		//System.out.println("Spectrum length = " + spectrum.length);
 
 		// while there are samples to read, we calculate the flux for each
 		// window

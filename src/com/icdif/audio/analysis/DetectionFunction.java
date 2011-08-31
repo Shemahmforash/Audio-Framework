@@ -52,7 +52,7 @@ public abstract class DetectionFunction {
 		public float[] real;
 
 		public float[] imaginary;
-		
+
 		public float[] spectrum;
 	}
 
@@ -187,10 +187,11 @@ public abstract class DetectionFunction {
 		System.arraycopy(nextSamples, 0, tempSamples, samples.length
 				- currentSample, currentSample);
 
-		// it performs the forward Fourier Transform in the tempSamples array
-		// (i.e. an array containing the samples from the overlapping area of
-		// the
-		// two windows)
+		/**
+		 * it performs the forward Fourier Transform in the tempSamples array
+		 * (i.e. an array containing the samples from the overlapping area of
+		 * the two windows)
+		 */
 		fft.forward(tempSamples);
 
 		// it jumps by an amount defined as the hopping Size
@@ -201,7 +202,7 @@ public abstract class DetectionFunction {
 		 */
 		componentsFFT.imaginary = fft.getImaginaryPart();
 		componentsFFT.real = fft.getRealPart();
-		
+
 		componentsFFT.spectrum = fft.getSpectrum();
 
 		return componentsFFT;
@@ -215,12 +216,12 @@ public abstract class DetectionFunction {
 	public FFT getFft() {
 		return fft;
 	}
-	
+
 	/**
 	 * Abstract class that returns the values of the detection function
+	 * 
 	 * @return the values of the detection function
 	 */
 	public abstract ArrayList<Float> getDetectionFunction();
-	
 
 }

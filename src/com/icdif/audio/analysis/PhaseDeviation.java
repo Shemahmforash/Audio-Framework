@@ -85,19 +85,41 @@ public class PhaseDeviation extends DetectionFunction {
 
 	}
 
+	/**
+	 * Initiates this class, by supplying the parameters needed and giving the
+	 * chance to behave like a Normalised Weighted Phase Deviation method
+	 * 
+	 * @param decoder
+	 *            The AudioDecoder that will decode the samples
+	 * @param sampleWindowSize
+	 *            The size of the window
+	 * @param hopSizeThe
+	 *            size of the overlap (it has to be minor than the sampleWindow)
+	 * @param isHamming
+	 *            If the samples are to be smoothed in the FFT by the use of the
+	 *            Hamming Function
+	 * @param useWeighting
+	 *            Whether weighting of the phase deviation is used. If true, the
+	 *            method is called Weighted Phase Deviation (WPD)
+	 * @param useNormalization
+	 *            Whether normalization of the weighted phase deviation if used.
+	 *            If true, it's called Normalised Weighted Phase Deviation
+	 *            (NWPD)
+	 */
 	public PhaseDeviation(AudioDecoder decoder, final int sampleWindowSize,
 			final int hopSize, final boolean isHamming,
 			final boolean useWeighting, final boolean useNormalization) {
-		
+
 		super(decoder, sampleWindowSize, hopSize, isHamming);
-		
-		if(useWeighting == false) {
-			System.out.println("Weighting needs to be true. Going back to the Phase Deviation method without weighting and without normalization.");
+
+		if (useWeighting == false) {
+			System.out
+					.println("Weighting needs to be true. Going back to the Phase Deviation method without weighting and without normalization.");
 		} else {
 			this.useWeighting = useWeighting;
 			this.useNormalization = useNormalization;
 		}
-		
+
 		this.calcPhaseDeviation();
 	}
 
@@ -109,12 +131,6 @@ public class PhaseDeviation extends DetectionFunction {
 		double[] phase = null;
 		double[] previousPhase = null;
 		double[] antePreviousPhase = null;
-		
-		/**
-		 * used to normalize
-		 */
-		float totalSpectrum = 0;
-		
 
 		do {
 
@@ -124,6 +140,11 @@ public class PhaseDeviation extends DetectionFunction {
 			phase = calcPhaseFromObject(components);
 
 			double phaseDeviation = 0;
+			
+			/**
+			 * used to normalize
+			 */
+			float totalSpectrum = 0;
 
 			/*
 			 * iterate though the bins and sum the modulus of the phase
@@ -169,10 +190,11 @@ public class PhaseDeviation extends DetectionFunction {
 										* components.spectrum[i]
 										* (phase[i] - 2 * previousPhase[i] - antePreviousPhase[i]));
 					}
-					
+
 				}
-				if(useNormalization == true) {
-					totalSpectrum += Math.sqrt(components.spectrum[i]*components.spectrum[i]);
+				if (useNormalization == true) {
+					totalSpectrum += Math.sqrt(components.spectrum[i]
+							* components.spectrum[i]);
 				}
 
 			}
@@ -181,13 +203,11 @@ public class PhaseDeviation extends DetectionFunction {
 			 * Adds the phase deviation to the list, dividing the result
 			 * obtained with the number of bins or doing the normalization
 			 */
-			if(useNormalization == false) {
+			if (useNormalization == false) {
 				PD.add((float) phaseDeviation / components.spectrum.length);
-			}
-			else {
+			} else {
 				PD.add((float) (phaseDeviation / totalSpectrum));
 			}
-			
 
 			if (previousPhase == null) {
 				previousPhase = new double[phase.length];

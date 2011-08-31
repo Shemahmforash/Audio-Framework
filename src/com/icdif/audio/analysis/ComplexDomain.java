@@ -99,9 +99,17 @@ public class ComplexDomain extends DetectionFunction {
 			float targetValue = 0;
 
 			for (int i = 0; i < components.spectrum.length; i++) {
-				targetValue = (float) ((float) Math.sqrt(lastSpectrum[i]
-						* lastSpectrum[i]) * Math.exp(2 * previousPhase[i]
-						- antePreviousPhase[i]));
+				if (previousPhase == null && antePreviousPhase == null) {
+					targetValue = (float) ((float) Math.sqrt(lastSpectrum[i]
+							* lastSpectrum[i]));
+				} else if (previousPhase != null && antePreviousPhase == null) {
+					targetValue = (float) ((float) Math.sqrt(lastSpectrum[i]
+							* lastSpectrum[i]) * Math.exp(2 * previousPhase[i]));
+				} else {
+					targetValue = (float) ((float) Math.sqrt(lastSpectrum[i]
+							* lastSpectrum[i]) * Math.exp(2 * previousPhase[i]
+							- antePreviousPhase[i]));
+				}
 
 				if (!isRectified) {
 					complex += Math.sqrt((spectrum[i] - targetValue)
@@ -116,7 +124,7 @@ public class ComplexDomain extends DetectionFunction {
 					}
 				}
 			}
-			
+
 			CD.add(complex);
 
 			/**

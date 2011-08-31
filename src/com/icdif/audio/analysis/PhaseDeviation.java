@@ -124,7 +124,7 @@ public class PhaseDeviation extends DetectionFunction {
 	}
 
 	/**
-	 * Calculate and sets the phase deviation
+	 * Calculate and set the phase deviation
 	 */
 	public void calcPhaseDeviation() {
 		FFTComponents components = this.nextPhase();

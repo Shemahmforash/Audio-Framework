@@ -16,12 +16,13 @@ import com.icdif.audio.io.WavDecoder;
 
 public class ExampleOnsetDetectionChooseMethodology {
 
-	public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/8-ambrielb.wav";
+	//public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/8-ambrielb.wav";
+	public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/6-three.wav";
 
 	/**
 	 * Define the methodology
 	 */
-	public static OnsetMethodology methodology = OnsetMethodology.NormalisedWeightedPhaseDeviation;
+	public static OnsetMethodology methodology = OnsetMethodology.SpectralFlux;
 
 	public static final int sampleWindowSize = 1024;
 
@@ -99,9 +100,8 @@ public class ExampleOnsetDetectionChooseMethodology {
 		Plot plot = new Plot(methodology.toString() + "(multiplier = "
 				+ multiplier + ")", 800, 600);
 		
-		plot.plot(peaks.getThreshold(), 1, Color.red);
-
 		plot.plot(onsetDetector.getDetectionFunction(), 1, Color.green);
+		plot.plot(peaks.getThreshold(), 1, Color.red);
 
 		plot.PlayInPlot(hopSize, new WavDecoder(new FileInputStream(FILE)));
 

@@ -165,8 +165,6 @@ public class PeakDetector {
 
 	/**
 	 * Gets an array containing the time instants (in seconds) of every onset
-	 * TODO: Cuidado q os parametros a receber aqui podem ser diferentes para
-	 * outras funções de detecção
 	 * 
 	 * @param spectralWindowSize
 	 *            the size of the spectral window, i.e., the hopsize
@@ -176,6 +174,10 @@ public class PeakDetector {
 	 */
 	public ArrayList<Double> getPeaksAsInstantsInTime(
 			final int spectralWindowSize, final int sampleRate) {
+		/*
+		 * TODO: Cuidado q os parametros a receber aqui podem ser diferentes
+		 * para outras funções de detecção
+		 */
 
 		for (int i = 0; i < this.peaks.size(); i++) {
 			if (this.getPeaks().get(i) > 0) {

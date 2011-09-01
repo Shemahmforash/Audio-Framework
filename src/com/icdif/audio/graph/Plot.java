@@ -412,31 +412,39 @@ public class Plot {
 
 		int position = 0;
 
+		/**
+		 * Instantiates the object responsible for drawing the lines and sets
+		 * the line colors.
+		 */
 		Graphics2D graph = buffImage.createGraphics();
 		graph.setColor(color);
 
 		String strLine;
-		System.out.println("Positions:");
-		// Read File Line By Line and creates a vertical line in the graphic for each line
+		// System.out.println("Positions:");
+		/**
+		 * Read File Line By Line and creates a vertical line in the graphic for
+		 * each line
+		 */
 		while ((strLine = br.readLine()) != null) {
 			// Print the content on the console
 			// System.out.println(strLine);
 
+			/**
+			 * converts the onset (seconds) to pixels in order to find a
+			 * position of the onset in the plot
+			 */
 			position = (int) ((int) (Float.valueOf(strLine) * sampleRate) / samplesPerPixel);
-			System.out.println(position);
+			// System.out.println(position);
 			graph.drawLine(position, 0, position, buffImage.getHeight());
 
 		}
-		// Close the input stream
+		/** Close the input stream */
 		in.close();
-
-		// int position = (int) (elapsedTime * (sampleRate) / samplesPerPixel));
-
 	}
 
 	/**
-	 * This plots the samples, with the Window defined as parameter. It can used
-	 * the scale of the last plot and a vertical offset.
+	 * This method plots the samples, with the Window defined as parameter. It
+	 * can used the scale of the last plot and a vertical offset.
 	 * 
 	 * @param samples
 	 *            the samples to plot
@@ -636,8 +644,8 @@ public class Plot {
 	public void PlayInPlot(final float samplesPerPixel, AudioDecoder decoder)
 			throws Exception {
 
-		System.out
-				.println("PlayInPlot sample rate: " + decoder.getSampleRate());
+		// System.out.println("PlayInPlot sample rate: " +
+		// decoder.getSampleRate());
 
 		play = true;
 		try {
@@ -746,8 +754,6 @@ public class Plot {
 
 		if (drawMin) {
 			// draws the min
-			// TODO: o sítio da recta ainda n está certo. Está como h/3, mas n
-			// eh bem isto
 			float minScaled = calculateScaledValue(buffImage, min, 0);
 			graph.drawLine(0, (int) minScaled + buffImage.getHeight() / 2,
 					(int) buffImage.getWidth(),

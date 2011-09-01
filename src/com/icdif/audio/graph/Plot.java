@@ -7,6 +7,11 @@ import java.awt.Graphics2D;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -95,7 +100,7 @@ public class Plot {
 				@Override
 				public void run() {
 
-					System.out.println("Plot invoke and wait started");
+					// System.out.println("Plot invoke and wait started");
 
 					// frame = new JFrame(title);
 
@@ -288,10 +293,10 @@ public class Plot {
 	 */
 	public void plot(ArrayList<Float> samples, final float samplesPerPixel,
 			final Color color) {
-		System.out.println("Dentro plot");
+		// System.out.println("Dentro plot");
 		synchronized (buffImage) {
 
-			System.out.println("Dentro sync");
+			// System.out.println("Dentro sync");
 
 			/*
 			 * if the size of the image is smaller than the ammount of values
@@ -324,7 +329,7 @@ public class Plot {
 				panel.setSize(buffImage.getWidth(), buffImage.getHeight());
 			}
 
-			System.out.println("Dentro sync2");
+			// System.out.println("Dentro sync2");
 
 			/*
 			 * when the plot is cleared, we calculate the maximum and minimum of
@@ -339,7 +344,7 @@ public class Plot {
 				cleared = false;
 			}
 
-			System.out.println("Dentro sync 3");
+			// System.out.println("Dentro sync 3");
 
 			Graphics2D graph = buffImage.createGraphics();
 
@@ -348,7 +353,7 @@ public class Plot {
 
 			graph.setColor(color);
 
-			System.out.println("Dentro sync");
+			// System.out.println("Dentro sync");
 
 			// float lastValue = (samples.get(0) / scalingFactor)
 			// * image.getHeight() / 3 + image.getHeight() / 2;
@@ -379,6 +384,54 @@ public class Plot {
 			}
 			// graph.dispose();
 		}
+	}
+
+	/**
+	 * This method plots onsets from a file (the file needs to have one onset in
+	 * seconds per line)
+	 * 
+	 * @param fstream
+	 *            the FileInputStream of the file to read
+	 * @param samplesPerPixel
+	 *            The number of samples in each pixel
+	 * @param sampleRate
+	 *            The sample rate of the audio signal
+	 * @param color
+	 *            The color of the line
+	 * @throws IOException
+	 */
+	public void plotFromFile(final FileInputStream fstream,
+			final float samplesPerPixel, final float sampleRate,
+			final Color color) throws IOException {
+
+		/**
+		 * Creates the objects that allow to read from the files
+		 */
+		DataInputStream in = new DataInputStream(fstream);
+		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+
+		int position = 0;
+
+		Graphics2D graph = buffImage.createGraphics();
+		graph.setColor(color);
+
+		String strLine;
+		System.out.println("Positions:");
+		// Read File Line By Line and creates a vertical line in the graphic for each line
+		while ((strLine = br.readLine()) != null) {
+			// Print the content on the console
+			// System.out.println(strLine);
+
+			position = (int) ((int) (Float.valueOf(strLine) * sampleRate) / samplesPerPixel);
+			System.out.println(position);
+			graph.drawLine(position, 0, position, buffImage.getHeight());
+
+		}
+		// Close the input stream
+		in.close();
+
+		// int position = (int) (elapsedTime * (sampleRate) / samplesPerPixel));
+
 	}
 
 	/**
@@ -580,7 +633,7 @@ public class Plot {
 	 * @param decoder
 	 * @throws Exception
 	 */
-	public void PlayInPlot(float samplesPerPixel, AudioDecoder decoder)
+	public void PlayInPlot(final float samplesPerPixel, AudioDecoder decoder)
 			throws Exception {
 
 		System.out
@@ -622,6 +675,8 @@ public class Plot {
 
 			// sets the Marker in the plot at the position calculated
 			this.setMarker(position, Color.white);
+
+			// System.out.println("position = " + position);
 
 			// sleeps so that the repaint can take effect
 			Thread.sleep(20);
@@ -770,7 +825,7 @@ public class Plot {
 
 		@Override
 		public void windowClosing(WindowEvent e) {
-			System.out.println("Janela a fechar (play = " + play + ")");
+			// System.out.println("Janela a fechar (play = " + play + ")");
 
 			// if it's playing, it stops playing before closing the window
 			if (play) {
@@ -786,7 +841,7 @@ public class Plot {
 			// by closing the window I release the memory associated with its
 			// buffered image
 			clear();
-			System.out.println("Limpo a buffimage");
+			// System.out.println("Limpo a buffimage");
 
 			// it actually closes the window
 			frame.dispose();

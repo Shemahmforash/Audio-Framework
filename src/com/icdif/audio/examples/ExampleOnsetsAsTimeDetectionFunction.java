@@ -105,6 +105,10 @@ public class ExampleOnsetsAsTimeDetectionFunction {
 					onsetDetector = new ComplexDomain(decoder,
 							sampleWindowSize, hopSize, true);
 					break;
+				case RectifiedComplexDomain:
+					onsetDetector = new ComplexDomain(decoder, sampleWindowSize,
+							hopSize, true, true);
+					break;
 				default:
 					// by default one uses the spectral flux
 					onsetDetector = new SpectralDifference(decoder,

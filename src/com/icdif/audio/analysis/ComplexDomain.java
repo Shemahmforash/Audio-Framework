@@ -48,7 +48,8 @@ public class ComplexDomain extends DetectionFunction {
 	}
 
 	/**
-	 * Initiates this class, by supplying the parameters needed
+	 * Initiates this class, by supplying the parameters needed and enabling it
+	 * to behave like a Rectified Complex Domain
 	 * 
 	 * @param decoder
 	 *            The AudioDecoder that will decode the samples

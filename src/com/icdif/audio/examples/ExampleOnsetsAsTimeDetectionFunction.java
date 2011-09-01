@@ -30,7 +30,7 @@ public class ExampleOnsetsAsTimeDetectionFunction {
 	/**
 	 * Define the methodology
 	 */
-	public static OnsetMethodology methodology = OnsetMethodology.WeightedPhaseDeviation;
+	public static OnsetMethodology methodology = OnsetMethodology.HighFrequencyContent;
 
 	/*
 	 * Parameters to use in the calculus
@@ -99,15 +99,16 @@ public class ExampleOnsetsAsTimeDetectionFunction {
 							sampleWindowSize, hopSize, true, true, true);
 					break;
 				case HighFrequencyContent:
-					onsetDetector = new HighFrequencyContent(decoder,
-							sampleWindowSize, hopSize, true);
+					onsetDetector = new HighFrequencyContent(decoder, sampleWindowSize,
+							hopSize, true);
+					break;
 				case ComplexDomain:
 					onsetDetector = new ComplexDomain(decoder,
 							sampleWindowSize, hopSize, true);
 					break;
 				case RectifiedComplexDomain:
-					onsetDetector = new ComplexDomain(decoder, sampleWindowSize,
-							hopSize, true, true);
+					onsetDetector = new ComplexDomain(decoder,
+							sampleWindowSize, hopSize, true, true);
 					break;
 				default:
 					// by default one uses the spectral flux
@@ -115,6 +116,9 @@ public class ExampleOnsetsAsTimeDetectionFunction {
 							sampleWindowSize, hopSize, true);
 					break;
 				}
+				
+				System.out.println(methodology.toString());
+				System.out.println(onsetDetector.getDetectionFunction());
 
 				/**
 				 * instantiates the peak detector, by passing the values of the

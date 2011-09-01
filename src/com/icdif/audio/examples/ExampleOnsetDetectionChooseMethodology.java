@@ -20,12 +20,14 @@ public class ExampleOnsetDetectionChooseMethodology {
 
 	// public static final String FILE =
 	// "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/8-ambrielb.wav";
-	public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/6-three.wav";
+	// public static final String FILE =
+	// "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/6-three.wav";
+	public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/25-rujero.wav";
 
 	/**
 	 * Define the methodology
 	 */
-	public static OnsetMethodology methodology = OnsetMethodology.ComplexDomain;
+	public static OnsetMethodology methodology = OnsetMethodology.RectifiedComplexDomain;
 
 	public static final int sampleWindowSize = 1024;
 
@@ -60,7 +62,6 @@ public class ExampleOnsetDetectionChooseMethodology {
 			onsetDetector = new SpectralDifference(decoder, sampleWindowSize,
 					hopSize, true);
 			break;
-
 		case PhaseDeviation:
 			onsetDetector = new PhaseDeviation(decoder, sampleWindowSize,
 					hopSize, true);
@@ -117,6 +118,7 @@ public class ExampleOnsetDetectionChooseMethodology {
 
 		plot.plot(onsetDetector.getDetectionFunction(), 1, Color.green);
 		plot.plot(peaks.getThreshold(), 1, Color.red);
+		// plot.plot(peaks.getPeaks(), 1, Color.blue);
 
 		plot.PlayInPlot(hopSize, new WavDecoder(new FileInputStream(FILE)));
 

@@ -22,6 +22,8 @@ public class PeakDetector {
 	 */
 	private int thresholdWindowSize = 10;
 
+	private int peakSelectionWindowSize = 3;
+
 	/**
 	 * The constant to be multiplied by the "average". If the value is bigger
 	 * than MULTIPLYING_FACTOR * threshold, then it's considered a peak
@@ -120,10 +122,33 @@ public class PeakDetector {
 	 */
 	private void calcFilteredDetectionFunction() {
 		for (int i = 0; i < threshold.size(); i++) {
-			if (threshold.get(i) <= detectionFunction.get(i))
-				filteredDetectionFunction.add(detectionFunction.get(i)
-						- threshold.get(i));
-			else
+			if (threshold.get(i) <= detectionFunction.get(i)) {
+				// the window starts at 0 or at the current index
+				// - peakSelectionWindowSize
+				int start = Math.max(0, i - peakSelectionWindowSize);
+
+				// the same here, it ends at the last index, or at the current
+				// index + peakSelectionWindowSize
+				int end = Math.min(detectionFunction.size() - 1, i
+						+ peakSelectionWindowSize);
+
+				// checks the current value with the values around it (using a
+				// window of size peakSelectionWindowSize) to see if it is a
+				// local max. If it is, then it's added as a candidate for an
+				// onset, else, then zero is added in its turn
+				boolean localMax = true;
+				for (int j = start; j <= end; j++) {
+					if (detectionFunction.get(i) < detectionFunction.get(j)) {
+						localMax = false;
+					}
+				}
+
+				if (localMax)
+					filteredDetectionFunction.add(detectionFunction.get(i)
+							- threshold.get(i));
+				else
+					filteredDetectionFunction.add((float) 0);
+			} else
 				filteredDetectionFunction.add((float) 0);
 		}
 	}

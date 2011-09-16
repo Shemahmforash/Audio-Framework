@@ -118,11 +118,12 @@ public class ExampleOnsetDetectionChooseMethodology {
 		Plot plot = new Plot(methodology.toString() + "(multiplier = "
 				+ multiplier + ")", 800, 600);
 
-		plot.plot(onsetDetector.getDetectionFunction(), 1, Color.green);
-		plot.plot(peaks.getThreshold(), 1, Color.red);
+		//plot.plot(onsetDetector.getDetectionFunction(), 1, Color.green);
+		//plot.plot(peaks.getThreshold(), 1, Color.red);
+		plot.plot(peaks.getPeaks(), 1, Color.CYAN);
 		
-		//plot.plotFromFile(new FileInputStream(groundTruth), hopSize, decoder.getSampleRate(), Color.blue);
-		plot.plotFromFile(new FileInputStream(myResult), hopSize, decoder.getSampleRate(), Color.magenta);
+		plot.plotFromFile(new FileInputStream(groundTruth), hopSize, decoder.getSampleRate(), Color.blue);
+		//plot.plotFromFile(new FileInputStream(myResult), hopSize, decoder.getSampleRate(), Color.magenta);
 		
 		
 		// plot.plot(peaks.getPeaks(), 1, Color.blue);

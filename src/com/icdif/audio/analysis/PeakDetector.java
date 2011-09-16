@@ -22,11 +22,16 @@ public class PeakDetector {
 	 */
 	private int thresholdWindowSize = 10;
 
+	/**
+	 * The size of the window to check if a value in the detection function is a
+	 * local maxima
+	 */
 	private int peakSelectionWindowSize = 3;
 
 	/**
-	 * The constant to be multiplied by the "average". If the value is bigger
-	 * than MULTIPLYING_FACTOR * threshold, then it's considered a peak
+	 * The constant to be multiplied by the "running average". If the value is
+	 * bigger than MULTIPLYING_FACTOR * threshold, and is a local maximathen
+	 * it's considered a peak
 	 */
 	private float multiplier = 1.6f;
 

@@ -32,7 +32,7 @@ public class PeakDetector {
 	 * If this class uses a peak selection window to find a local maxima or if
 	 * it just considers all the values larger than the threshold.
 	 */
-	private boolean usePeakSelectionWindow = true;
+	private boolean useLocalMaxAsPeakSelectionCondition = true;
 
 	/**
 	 * The constant to be multiplied by the "running average". If the value is
@@ -83,8 +83,8 @@ public class PeakDetector {
 	}
 
 	/**
-	 * Instantiates this class by passing the spectral Flux and the parameters
-	 * that'll be used to calculate the threshold and the peaks.
+	 * Instantiates this class by passing the Detection Function and the
+	 * parameters that'll be used to calculate the threshold and the peaks.
 	 * 
 	 * @param detectionFunction
 	 * @param thresholdWindowSize
@@ -98,6 +98,31 @@ public class PeakDetector {
 		this.thresholdWindowSize = thresholdWindowSize;
 		this.multiplier = multiplier;
 		this.detectionFunction = detectionFunction;
+	}
+
+	/**
+	 * Instantiates this class by passing the Detection Function and the
+	 * parameters that'll be used to calculate the threshold and the peaks.
+	 * 
+	 * @param detectionFunction
+	 * @param thresholdWindowSize
+	 *            by default it is 10 samples in each side
+	 * @param multiplier
+	 *            by default it is 1.6
+	 * @param useLocalMaxAsPeakSelectionCondition
+	 *            By default it is false
+	 * @param peakSelectionWindowSize
+	 *            By default it is 3
+	 */
+	public PeakDetector(final ArrayList<Float> detectionFunction,
+			int thresholdWindowSize, float multiplier,
+			boolean useLocalMaxAsPeakSelectionCondition,
+			int peakSelectionWindowSize) {
+		super();
+		this.thresholdWindowSize = thresholdWindowSize;
+		this.peakSelectionWindowSize = peakSelectionWindowSize;
+		this.useLocalMaxAsPeakSelectionCondition = useLocalMaxAsPeakSelectionCondition;
+		this.multiplier = multiplier;
 	}
 
 	/**
@@ -137,7 +162,7 @@ public class PeakDetector {
 
 				// if not using the condition of local maximum, then one needs
 				// just to consider the condition bigger than threshold
-				if (!usePeakSelectionWindow) {
+				if (!useLocalMaxAsPeakSelectionCondition) {
 					filteredDetectionFunction.add(detectionFunction.get(i)
 							- threshold.get(i));
 				} else {

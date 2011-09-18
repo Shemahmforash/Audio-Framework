@@ -22,9 +22,14 @@ public class ExampleOnsetDetectionChooseMethodology {
 	// "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/8-ambrielb.wav";
 	// public static final String FILE =
 	// "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/6-three.wav";
-	public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/realorgan3.wav";
+	
+	/*public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/realorgan3.wav";
 	public static final String groundTruth = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/ground-truth/realorgan3.txt";
-	public static final String myResult = "/home/wanderer/corpus/results-2011-08-30/SFonsets_mult=1.6/realorgan3.txt";
+	public static final String myResult = "/home/wanderer/corpus/results-2011-08-30/SFonsets_mult=1.6/realorgan3.txt";*/
+	
+	public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/6-three.wav";
+	public static final String groundTruth = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/ground-truth/6-three.txt";
+	public static final String myResult = "/home/wanderer/corpus/results-2011-08-30/SFonsets_mult=1.6/6-three.txt";
 
 	/**
 	 * Define the methodology

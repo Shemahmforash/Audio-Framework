@@ -77,7 +77,6 @@ public class WavDecoder implements AudioDecoder {
 		channels = inputStream.readShortLittleEndian();
 		sampleRate = inputStream.readIntLittleEndian();
 
-		// TODO: suporte para outros sampling rates
 		/*
 		 * if (sampleRate != 44100) throw new
 		 * IllegalArgumentException("Not 44100 sampling rate");

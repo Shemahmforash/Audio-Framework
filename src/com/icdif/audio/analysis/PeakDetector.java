@@ -29,6 +29,12 @@ public class PeakDetector {
 	private int peakSelectionWindowSize = 3;
 
 	/**
+	 * If this class uses a peak selection window to find a local maxima or if
+	 * it just considers all the values larger than the threshold.
+	 */
+	private boolean usePeakSelectionWindow = true;
+
+	/**
 	 * The constant to be multiplied by the "running average". If the value is
 	 * bigger than MULTIPLYING_FACTOR * threshold, and is a local maximathen
 	 * it's considered a peak
@@ -128,31 +134,46 @@ public class PeakDetector {
 	private void calcFilteredDetectionFunction() {
 		for (int i = 0; i < threshold.size(); i++) {
 			if (threshold.get(i) <= detectionFunction.get(i)) {
-				// the window starts at 0 or at the current index
-				// - peakSelectionWindowSize
-				int start = Math.max(0, i - peakSelectionWindowSize);
 
-				// the same here, it ends at the last index, or at the current
-				// index + peakSelectionWindowSize
-				int end = Math.min(detectionFunction.size() - 1, i
-						+ peakSelectionWindowSize);
-
-				// checks the current value with the values around it (using a
-				// window of size peakSelectionWindowSize) to see if it is a
-				// local max. If it is, then it's added as a candidate for an
-				// onset, else, then zero is added in its turn
-				boolean localMax = true;
-				for (int j = start; j <= end; j++) {
-					if (detectionFunction.get(i) < detectionFunction.get(j)) {
-						localMax = false;
-					}
-				}
-
-				if (localMax)
+				// if not using the condition of local maximum, then one needs
+				// just to consider the condition bigger than threshold
+				if (!usePeakSelectionWindow) {
 					filteredDetectionFunction.add(detectionFunction.get(i)
 							- threshold.get(i));
-				else
-					filteredDetectionFunction.add((float) 0);
+				} else {
+					// the window starts at 0 or at the current index
+					// - peakSelectionWindowSize
+					int start = Math.max(0, i - peakSelectionWindowSize);
+
+					// the same here, it ends at the last index, or at the
+					// current
+					// index + peakSelectionWindowSize
+					int end = Math.min(detectionFunction.size() - 1, i
+							+ peakSelectionWindowSize);
+
+					// checks the current value with the values around it (using
+					// a
+					// window of size peakSelectionWindowSize) to see if it is a
+					// local max. If it is, then it's added as a candidate for
+					// an
+					// onset, else, then zero is added in its turn
+					boolean localMax = true;
+					for (int j = start; j <= end; j++) {
+						if (detectionFunction.get(i) < detectionFunction.get(j)) {
+							localMax = false;
+						}
+					}
+
+					// if the current value is a maximum in the
+					// peakSelectionWindowSize window, then it is selected as a
+					// candidate for onset
+					if (localMax)
+						filteredDetectionFunction.add(detectionFunction.get(i)
+								- threshold.get(i));
+					else
+						filteredDetectionFunction.add((float) 0);
+				}
+
 			} else
 				filteredDetectionFunction.add((float) 0);
 		}

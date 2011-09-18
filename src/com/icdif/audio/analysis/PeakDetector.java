@@ -24,19 +24,19 @@ public class PeakDetector {
 
 	/**
 	 * The size of the window to check if a value in the detection function is a
-	 * local maxima
+	 * local maximum
 	 */
 	private int peakSelectionWindowSize = 3;
 
 	/**
-	 * If this class uses a peak selection window to find a local maxima or if
+	 * If this class uses a peak selection window to find a local maximum or if
 	 * it just considers all the values larger than the threshold.
 	 */
 	private boolean useLocalMaxAsPeakSelectionCondition = true;
 
 	/**
 	 * The constant to be multiplied by the "running average". If the value is
-	 * bigger than MULTIPLYING_FACTOR * threshold, and is a local maximathen
+	 * bigger than MULTIPLYING_FACTOR * threshold, and is a local maximum then
 	 * it's considered a peak
 	 */
 	private float multiplier = 1.6f;
@@ -60,7 +60,7 @@ public class PeakDetector {
 	/**
 	 * This array list contains the peaks, i.e., the values from the
 	 * filteredDetectionFunction that are bigger than the next value. Any value
-	 * > 0 in this arraylist is a peak
+	 * > 0 in this array list is a peak
 	 */
 	private ArrayList<Float> peaks = new ArrayList<Float>();
 
@@ -71,8 +71,9 @@ public class PeakDetector {
 	private ArrayList<Double> onsets = new ArrayList<Double>();
 
 	/**
-	 * Instantiates the class by passing the spectral Flux that'll be used to
-	 * calculate the threshold
+	 * Instantiates the class by passing the Detection Function that'll be used
+	 * to calculate the threshold (by using this constructor one is assuming all
+	 * the parameters to have their default values)
 	 * 
 	 * @param detectionFunction
 	 */
@@ -160,28 +161,33 @@ public class PeakDetector {
 		for (int i = 0; i < threshold.size(); i++) {
 			if (threshold.get(i) <= detectionFunction.get(i)) {
 
-				// if not using the condition of local maximum, then one needs
-				// just to consider the condition bigger than threshold
+				/*
+				 * if not using the condition of local maximum, then one needs
+				 * just to consider the condition bigger than threshold
+				 */
 				if (!useLocalMaxAsPeakSelectionCondition) {
 					filteredDetectionFunction.add(detectionFunction.get(i)
 							- threshold.get(i));
 				} else {
-					// the window starts at 0 or at the current index
-					// - peakSelectionWindowSize
+					/*
+					 * the window starts at 0 or at the current index -
+					 * peakSelectionWindowSize
+					 */
 					int start = Math.max(0, i - peakSelectionWindowSize);
 
-					// the same here, it ends at the last index, or at the
-					// current
-					// index + peakSelectionWindowSize
+					/*
+					 * the same here, it ends at the last index, or at the
+					 * current index + peakSelectionWindowSize
+					 */
 					int end = Math.min(detectionFunction.size() - 1, i
 							+ peakSelectionWindowSize);
 
-					// checks the current value with the values around it (using
-					// a
-					// window of size peakSelectionWindowSize) to see if it is a
-					// local max. If it is, then it's added as a candidate for
-					// an
-					// onset, else, then zero is added in its turn
+					/*
+					 * checks the current value with the values around it (using
+					 * a window of size peakSelectionWindowSize) to see if it is
+					 * a local max. If it is, then it's added as a candidate for
+					 * an onset, else, then zero is added in its turn
+					 */
 					boolean localMax = true;
 					for (int j = start; j <= end; j++) {
 						if (detectionFunction.get(i) < detectionFunction.get(j)) {
@@ -189,9 +195,11 @@ public class PeakDetector {
 						}
 					}
 
-					// if the current value is a maximum in the
-					// peakSelectionWindowSize window, then it is selected as a
-					// candidate for onset
+					/*
+					 * if the current value is a maximum in the
+					 * peakSelectionWindowSize window, then it is selected as a
+					 * candidate for onset
+					 */
 					if (localMax)
 						filteredDetectionFunction.add(detectionFunction.get(i)
 								- threshold.get(i));
@@ -211,8 +219,10 @@ public class PeakDetector {
 	 */
 	public void calcPeaks() {
 
-		// the threshold and filtered detectionFunction are needed in order to
-		// calculate the peaks
+		/*
+		 * the threshold and filtered detectionFunction are needed in order to
+		 * calculate the peaks
+		 */
 		this.calcThreshold();
 		// System.out.println("threshold:");
 		// System.out.println(this.threshold);
@@ -225,9 +235,10 @@ public class PeakDetector {
 		 * that are to close together, say < 10ms
 		 */
 		for (int i = 0; i < filteredDetectionFunction.size() - 1; i++) {
-			// in the filtered detection function, a peak is a value bigger than
-			// the
-			// next value
+			/*
+			 * in the filtered detection function, a peak is a value bigger than
+			 * the next value
+			 */
 			if (filteredDetectionFunction.get(i) > filteredDetectionFunction
 					.get(i + 1)) {
 				peaks.add(filteredDetectionFunction.get(i));
@@ -250,14 +261,12 @@ public class PeakDetector {
 	 */
 	public ArrayList<Double> getPeaksAsInstantsInTime(
 			final int spectralWindowSize, final int sampleRate) {
-		/*
-		 * TODO: Cuidado q os parametros a receber aqui podem ser diferentes
-		 * para outras funções de detecção
-		 */
-
 		for (int i = 0; i < this.peaks.size(); i++) {
 			if (this.getPeaks().get(i) > 0) {
-
+				/*
+				 * converts the value to seconds by considering the window size
+				 * and the sample rate
+				 */
 				this.onsets
 						.add((double) (i * (double) spectralWindowSize / ((double) sampleRate)));
 			}

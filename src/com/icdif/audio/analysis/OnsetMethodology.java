@@ -7,11 +7,5 @@ package com.icdif.audio.analysis;
  * 
  */
 public enum OnsetMethodology {
-	SpectralFlux,
-	PhaseDeviation,
-	WeightedPhaseDeviation,
-	NormalisedWeightedPhaseDeviation,
-	HighFrequencyContent,
-	ComplexDomain,
-	RectifiedComplexDomain
+	SpectralFlux, PhaseDeviation, WeightedPhaseDeviation, NormalisedWeightedPhaseDeviation, HighFrequencyContent, ComplexDomain, RectifiedComplexDomain
 }

@@ -30,7 +30,7 @@ public class ExampleOnsetsAsTimeDetectionFunction {
 	/**
 	 * Define the methodology
 	 */
-	public static OnsetMethodology methodology = OnsetMethodology.HighFrequencyContent;
+	public static OnsetMethodology methodology = OnsetMethodology.PhaseDeviation;
 
 	/*
 	 * Parameters to use in the calculus

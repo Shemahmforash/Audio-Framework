@@ -6,6 +6,9 @@ package com.icdif.audio.examples;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import com.icdif.audio.analysis.ComplexDomain;
@@ -15,6 +18,7 @@ import com.icdif.audio.analysis.OnsetMethodology;
 import com.icdif.audio.analysis.PeakDetector;
 import com.icdif.audio.analysis.PhaseDeviation;
 import com.icdif.audio.analysis.SpectralDifference;
+import com.icdif.audio.evaluator.ResultsEvaluator;
 import com.icdif.audio.io.AudioDecoder;
 import com.icdif.audio.io.MP3Decoder;
 import com.icdif.audio.io.WavDecoder;
@@ -25,21 +29,25 @@ import com.icdif.audio.io.WavDecoder;
  */
 public class ExampleResultsFetcher {
 
+	public static final String DIRECTORYFMEASURE = "/home/wanderer/corpus/fmeasure/";
+
 	/**
 	 * The directory where the corpus files are stored
 	 */
 	public static final File DIRECTORYCORPUS = new File(
 			"/home/wanderer/corpus/");
 
+	public static final String FMEASUREDIR = "/home/wanderer/corpus/fmeasure/";
+
 	/**
 	 * Define the methodology
 	 */
-	public static OnsetMethodology methodology = OnsetMethodology.RectifiedComplexDomain;
+	public static OnsetMethodology methodology = OnsetMethodology.PhaseDeviation;
 
 	/*
 	 * Define the parameters
 	 */
-	public static final int[] sampleWindowSizeParameters = {1024};
+	public static final int[] sampleWindowSizeParameters = { 1024 };
 
 	public static final int hopSize = 512;
 
@@ -171,6 +179,22 @@ public class ExampleResultsFetcher {
 
 							peaks.printOnsetsToFile(directoryToPlaceResults
 									+ filename + ".txt");
+
+							ResultsEvaluator evaluator = new ResultsEvaluator();
+
+							evaluator.evaluate(filename,
+									directoryToPlaceResults);
+
+							// System.out.println("Fmeasure: " +
+							// evaluator.getfMeasure());
+
+							printToFile("Fmeasure: " + evaluator.getfMeasure()
+									+ methodology.toString() + "/" + "sample="
+									+ sampleWindowSize + "_thresh="
+									+ thresholdWindowSize + "_multpl="
+									+ multiplier + ".txt", DIRECTORYFMEASURE
+									+ filename + ".txt");
+
 						}// end for that runs through the files
 					}
 				}
@@ -178,5 +202,27 @@ public class ExampleResultsFetcher {
 		}
 		System.out.println("Done!");
 
+	}
+
+	/**
+	 * prints data to a file
+	 * 
+	 * @param dataToPrint
+	 * @param filename
+	 *            - the full path to the file
+	 */
+	private static void printToFile(String dataToPrint, String filename) {
+		try {
+			FileWriter outFile = new FileWriter(filename, true);
+			PrintWriter out = new PrintWriter(outFile);
+
+			// for (int i = 0; i < this.onsets.size(); i++) {
+			out.println(dataToPrint);
+			// }
+
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

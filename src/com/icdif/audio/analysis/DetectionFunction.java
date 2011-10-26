@@ -223,6 +223,9 @@ public abstract class DetectionFunction {
 
 		for (int i = 0; i < component.real.length; i++) {
 			phase[i] = calcPhase(component.real[i], component.imaginary[i]);
+			if(phase[i] > Math.PI || phase[i] < -Math.PI) {
+				System.out.println("NOT BETWEEM -PI and PI: Phase[" + i + "] = " + phase[i]);
+			}
 		}
 
 		return phase;
@@ -250,8 +253,10 @@ public abstract class DetectionFunction {
 		 * Now one must consider the quadrant
 		 */
 		if (real < 0.0 && imag == 0.0) {
+			//phase = Math.PI;
 			phase = Math.PI;
 		} else if (real < 0.0 && imag == -0.0) {
+			//phase = -Math.PI;
 			phase = -Math.PI;
 		} else if (real < 0.0 && imag > 0.0) {
 			phase += Math.PI;

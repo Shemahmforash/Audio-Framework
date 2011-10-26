@@ -138,7 +138,7 @@ public class PhaseDeviation extends DetectionFunction {
 			 * get the phase from the components object
 			 */
 			phase = calcPhaseFromComponents(components);
-			
+
 			double phaseDeviation = 0;
 
 			/**
@@ -162,33 +162,36 @@ public class PhaseDeviation extends DetectionFunction {
 			for (int i = 0; i < components.spectrum.length; i++) {
 				if (useWeighting == false) {
 					if (previousPhase == null && antePreviousPhase == null) {
-						phaseDeviation += Math.sqrt(phase[i] * phase[i]);
+						phaseDeviation += phase[i] > 0 ? phase[i] : (-1)
+								* phase[i];
 					} else if (previousPhase != null
 							&& antePreviousPhase == null) {
-						phaseDeviation += Math
-								.sqrt((phase[i] - 2 * previousPhase[i])
-										* (phase[i] - 2 * previousPhase[i]));
+						phaseDeviation += (phase[i] - 2 * previousPhase[i]) > 0 ? phase[i]
+								- 2 * previousPhase[i]
+								: (-1) * (phase[i] - 2 * previousPhase[i]);
 					} else {
-						phaseDeviation += Math
-								.sqrt((phase[i] - 2 * previousPhase[i] - antePreviousPhase[i])
-										* (phase[i] - 2 * previousPhase[i] - antePreviousPhase[i]));
+						phaseDeviation += (phase[i] - 2 * previousPhase[i] - antePreviousPhase[i]) > 0 ? phase[i]
+								- 2 * previousPhase[i] - antePreviousPhase[i]
+								: (-1)
+										* (phase[i] - 2 * previousPhase[i] - antePreviousPhase[i]);
 					}
 				} else {
 					if (previousPhase == null && antePreviousPhase == null) {
-						phaseDeviation += Math.sqrt(components.spectrum[i]
-								* phase[i] * components.spectrum[i] * phase[i]);
+						phaseDeviation += (components.spectrum[i] * phase[i]) > 0 ? components.spectrum[i]
+								* phase[i]
+								: (-1) * components.spectrum[i] * phase[i];
 					} else if (previousPhase != null
 							&& antePreviousPhase == null) {
-						phaseDeviation += Math.sqrt(components.spectrum[i]
+
+						phaseDeviation += (components.spectrum[i] * (phase[i] - 2 * previousPhase[i])) > 0 ? components.spectrum[i]
 								* (phase[i] - 2 * previousPhase[i])
-								* components.spectrum[i]
-								* (phase[i] - 2 * previousPhase[i]));
+								: (-1) * components.spectrum[i]
+										* (phase[i] - 2 * previousPhase[i]);
 					} else {
-						phaseDeviation += Math
-								.sqrt(components.spectrum[i]
-										* (phase[i] - 2 * previousPhase[i] - antePreviousPhase[i])
-										* components.spectrum[i]
-										* (phase[i] - 2 * previousPhase[i] - antePreviousPhase[i]));
+						phaseDeviation += ( components.spectrum[i]
+								* (phase[i] - 2 * previousPhase[i] - antePreviousPhase[i])) > 0 ? components.spectrum[i]
+										* (phase[i] - 2 * previousPhase[i] - antePreviousPhase[i]) : (-1) * components.spectrum[i]
+												* (phase[i] - 2 * previousPhase[i] - antePreviousPhase[i]);
 					}
 
 				}

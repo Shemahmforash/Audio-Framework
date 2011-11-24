@@ -4,6 +4,7 @@
 package com.icdif.audio.analysis;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.io.*;
 
 /**
@@ -125,6 +126,13 @@ public class PeakDetector {
 		this.useLocalMaxAsPeakSelectionCondition = useLocalMaxAsPeakSelectionCondition;
 		this.multiplier = multiplier;
 	}
+	
+	private void normalizeDetectionFunction() {
+		float max = Collections.max(this.detectionFunction);
+		for (int i = 0; i < detectionFunction.size(); i++) {
+			detectionFunction.set(i, detectionFunction.get(i) / max);
+		}
+	}
 
 	/**
 	 * For each value in the Detection Function, we calculate the average of the
@@ -219,6 +227,8 @@ public class PeakDetector {
 	 */
 	public void calcPeaks() {
 
+		//first one normalizes the detection function
+		this.normalizeDetectionFunction();
 		/*
 		 * the threshold and filtered detectionFunction are needed in order to
 		 * calculate the peaks

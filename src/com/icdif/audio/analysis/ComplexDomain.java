@@ -99,29 +99,22 @@ public class ComplexDomain extends DetectionFunction {
 
 			float targetValue = 0;
 
-			for (int i = 0; i < components.spectrum.length; i++) {
-				if (previousPhase == null && antePreviousPhase == null) {
-					targetValue = (float) ((float) Math.sqrt(lastSpectrum[i]
-							* lastSpectrum[i]));
-				} else if (previousPhase != null && antePreviousPhase == null) {
-					targetValue = (float) ((float) Math.sqrt(lastSpectrum[i]
-							* lastSpectrum[i]) * Math.exp(2 * previousPhase[i]));
-				} else {
-					targetValue = (float) ((float) Math.sqrt(lastSpectrum[i]
-							* lastSpectrum[i]) * Math.exp(2 * previousPhase[i]
-							- antePreviousPhase[i]));
-				}
+			for (int i = 0; i < components.spectrum.length; i++) {				
+				targetValue = (float) Math.abs(Math.abs(lastSpectrum[i])
+						* Math.exp(2 * previousPhase[i] - antePreviousPhase[i]));
 
 				if (!isRectified) {
-					complex += Math.sqrt((spectrum[i] - targetValue)
-							* (spectrum[i] - targetValue));
+					/*complex += Math.sqrt((spectrum[i] - targetValue)
+							* (spectrum[i] - targetValue));*/
+					complex += Math.abs(spectrum[i] - targetValue);
 				} else {
 					// when there is rectification, one only sums the values
 					// when the current spectrum is bigger than the previous one
 
 					if (spectrum[i] > lastSpectrum[i]) {
-						complex += Math.sqrt((spectrum[i] - targetValue)
-								* (spectrum[i] - targetValue));
+						/*complex += Math.sqrt((spectrum[i] - targetValue)
+								* (spectrum[i] - targetValue));*/
+						complex += Math.abs(spectrum[i] - targetValue);
 					}
 				}
 			}

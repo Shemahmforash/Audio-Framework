@@ -114,7 +114,6 @@ public class SpectralDifference extends DetectionFunction {
 			System.arraycopy(spectrum, 0, lastSpectrum, 0, spectrum.length);
 
 		} while ((spectrum = this.nextSpectrum()) != null);
-
 	}
 
 	/**
@@ -128,7 +127,7 @@ public class SpectralDifference extends DetectionFunction {
 	}
 
 	@Override
-	public ArrayList<Float> getDetectionFunction() {
+	public ArrayList<Float> getDetectionFunction() {		
 		return spectralDifference;
 	}
 

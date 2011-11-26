@@ -116,7 +116,6 @@ public class HighFrequencyContent extends DetectionFunction {
 			this.HFC.add(energ/spectrum.length);
 
 		} while ((spectrum = this.nextSpectrum()) != null);
-
 	}
 
 	/*

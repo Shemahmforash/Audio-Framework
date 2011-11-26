@@ -161,45 +161,16 @@ public class PhaseDeviation extends DetectionFunction {
 			 */
 			for (int i = 0; i < components.spectrum.length; i++) {
 				if (useWeighting == false) {
-					if (previousPhase == null && antePreviousPhase == null) {
-						phaseDeviation += phase[i] > 0 ? phase[i] : (-1)
-								* phase[i];
-					} else if (previousPhase != null
-							&& antePreviousPhase == null) {
-						phaseDeviation += (phase[i] - 2 * previousPhase[i]) > 0 ? phase[i]
-								- 2 * previousPhase[i]
-								: (-1) * (phase[i] - 2 * previousPhase[i]);
-					} else {
-						phaseDeviation += (phase[i] - 2 * previousPhase[i] - antePreviousPhase[i]) > 0 ? phase[i]
-								- 2 * previousPhase[i] - antePreviousPhase[i]
-								: (-1)
-										* (phase[i] - 2 * previousPhase[i] - antePreviousPhase[i]);
-					}
+					phaseDeviation += Math.abs(phase[i] - 2 * previousPhase[i]
+							+ antePreviousPhase[i]);
 				} else {
-					if (previousPhase == null && antePreviousPhase == null) {
-						phaseDeviation += (components.spectrum[i] * phase[i]) > 0 ? components.spectrum[i]
-								* phase[i]
-								: (-1) * components.spectrum[i] * phase[i];
-					} else if (previousPhase != null
-							&& antePreviousPhase == null) {
-
-						phaseDeviation += (components.spectrum[i] * (phase[i] - 2 * previousPhase[i])) > 0 ? components.spectrum[i]
-								* (phase[i] - 2 * previousPhase[i])
-								: (-1) * components.spectrum[i]
-										* (phase[i] - 2 * previousPhase[i]);
-					} else {
-						phaseDeviation += ( components.spectrum[i]
-								* (phase[i] - 2 * previousPhase[i] - antePreviousPhase[i])) > 0 ? components.spectrum[i]
-										* (phase[i] - 2 * previousPhase[i] - antePreviousPhase[i]) : (-1) * components.spectrum[i]
-												* (phase[i] - 2 * previousPhase[i] - antePreviousPhase[i]);
-					}
-
+					phaseDeviation += Math
+							.abs(components.spectrum[i]
+									* (phase[i] - 2 * previousPhase[i] + antePreviousPhase[i]));
 				}
 				if (useNormalization == true) {
-					totalSpectrum += Math.sqrt(components.spectrum[i]
-							* components.spectrum[i]);
+					totalSpectrum += Math.abs(components.spectrum[i]);
 				}
-
 			}
 
 			/*

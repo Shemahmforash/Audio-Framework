@@ -23,18 +23,22 @@ public class ExampleOnsetDetectionChooseMethodology {
 	// public static final String FILE =
 	// "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/6-three.wav";
 	
-	public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/realorgan3.wav";
+	/*public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/realorgan3.wav";
 	public static final String groundTruth = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/ground-truth/realorgan3.txt";
-	public static final String myResult = "/home/wanderer/corpus/results-2011-08-30/SFonsets_mult=1.6/realorgan3.txt";
+	public static final String myResult = "/home/wanderer/corpus/results-2011-08-30/SFonsets_mult=1.6/realorgan3.txt";*/
 	
 	/*public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/6-three.wav";
 	public static final String groundTruth = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/ground-truth/6-three.txt";
 	public static final String myResult = "/home/wanderer/corpus/results-2011-08-30/SFonsets_mult=1.6/6-three.txt";*/
+	
+	public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/RM-C002.wav";
+	public static final String groundTruth = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/ground-truth/RM-C002.txt";
+	public static final String myResult = "/home/wanderer/corpus/results-2011-08-30/SFonsets_mult=1.6/RM-C002.txt";
 
 	/**
 	 * Define the methodology
 	 */
-	public static OnsetMethodology methodology = OnsetMethodology.SpectralFlux;
+	public static OnsetMethodology methodology = OnsetMethodology.ComplexDomain;
 
 	public static final int sampleWindowSize = 1024;
 
@@ -42,7 +46,7 @@ public class ExampleOnsetDetectionChooseMethodology {
 
 	public static final int thresholdWindowSize = 10;
 
-	public static final float multiplier = 1.0f;
+	public static final float multiplier = 1.5f;
 
 	/**
 	 * @param args
@@ -100,9 +104,6 @@ public class ExampleOnsetDetectionChooseMethodology {
 			break;
 		}
 
-		System.out.println(methodology.toString());
-		System.out.println(onsetDetector.getDetectionFunction());
-
 		/**
 		 * instantiates the peak detector, by passing the values of the
 		 * detection function already calculated, the threshold window size and
@@ -116,6 +117,8 @@ public class ExampleOnsetDetectionChooseMethodology {
 		 * calculates the peaks
 		 */
 		peaks.calcPeaks();
+		System.out.println(methodology.toString());
+		System.out.println(peaks.getDetectionFunction());
 		System.out.println("Onsets:");
 		System.out.println(peaks.getPeaksAsInstantsInTime(hopSize,
 				(int) decoder.getSampleRate()));

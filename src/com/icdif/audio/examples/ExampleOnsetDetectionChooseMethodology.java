@@ -27,18 +27,18 @@ public class ExampleOnsetDetectionChooseMethodology {
 	public static final String groundTruth = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/ground-truth/realorgan3.txt";
 	public static final String myResult = "/home/wanderer/corpus/results-2011-08-30/SFonsets_mult=1.6/realorgan3.txt";*/
 	
-	/*public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/6-three.wav";
+	public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/6-three.wav";
 	public static final String groundTruth = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/ground-truth/6-three.txt";
-	public static final String myResult = "/home/wanderer/corpus/results-2011-08-30/SFonsets_mult=1.6/6-three.txt";*/
+	public static final String myResult = "/home/wanderer/corpus/results-2011-08-30/SFonsets_mult=1.6/6-three.txt";
 	
-	public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/RM-C002.wav";
+	/*public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/RM-C002.wav";
 	public static final String groundTruth = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/ground-truth/RM-C002.txt";
-	public static final String myResult = "/home/wanderer/corpus/results-2011-08-30/SFonsets_mult=1.6/RM-C002.txt";
+	public static final String myResult = "/home/wanderer/corpus/results-2011-08-30/SFonsets_mult=1.6/RM-C002.txt";*/
 
 	/**
 	 * Define the methodology
 	 */
-	public static OnsetMethodology methodology = OnsetMethodology.ComplexDomain;
+	public static OnsetMethodology methodology = OnsetMethodology.SpectralFlux;
 
 	public static final int sampleWindowSize = 1024;
 
@@ -58,6 +58,9 @@ public class ExampleOnsetDetectionChooseMethodology {
 
 		AudioDecoder decoder = null;
 		DetectionFunction onsetDetector = null;
+		
+		/*System.out.println(Math.exp(0.0));
+		System.out.println(Math.abs(0.0));*/
 
 		if (FILE.endsWith(".wav")) {
 			decoder = new WavDecoder(new FileInputStream(FILE));
@@ -126,8 +129,9 @@ public class ExampleOnsetDetectionChooseMethodology {
 		Plot plot = new Plot(methodology.toString() + "(multiplier = "
 				+ multiplier + ")", 800, 600);
 
-		plot.plot(onsetDetector.getDetectionFunction(), 1, Color.green);
 		plot.plot(peaks.getThreshold(), 1, Color.red);
+		plot.plot(onsetDetector.getDetectionFunction(), 1, Color.green);
+		
 		//plot.plot(peaks.getPeaks(), 1, Color.CYAN);
 		
 		plot.plotFromFile(new FileInputStream(groundTruth), hopSize, decoder.getSampleRate(), Color.blue);

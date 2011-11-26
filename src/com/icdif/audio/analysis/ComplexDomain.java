@@ -98,6 +98,16 @@ public class ComplexDomain extends DetectionFunction {
 			float complex = 0;
 
 			float targetValue = 0;
+			
+			/**
+			 * prepare the data for the next iteration
+			 */
+			if (previousPhase == null) {
+				previousPhase = new double[phase.length];
+			}
+			if (antePreviousPhase == null) {
+				antePreviousPhase = new double[phase.length];
+			}
 
 			for (int i = 0; i < components.spectrum.length; i++) {				
 				targetValue = (float) Math.abs(Math.abs(lastSpectrum[i])
@@ -127,13 +137,6 @@ public class ComplexDomain extends DetectionFunction {
 			// the lastSpectrum in the following iteration is the
 			// currentSpectrum of this iteration
 			System.arraycopy(spectrum, 0, lastSpectrum, 0, spectrum.length);
-
-			if (previousPhase == null) {
-				previousPhase = new double[phase.length];
-			}
-			if (antePreviousPhase == null) {
-				antePreviousPhase = new double[phase.length];
-			}
 
 			// the previous phase in the following iteration is the
 			// current phase of this iteration

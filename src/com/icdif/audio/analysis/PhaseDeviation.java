@@ -138,13 +138,23 @@ public class PhaseDeviation extends DetectionFunction {
 			 * get the phase from the components object
 			 */
 			phase = calcPhaseFromComponents(components);
-
+			
 			double phaseDeviation = 0;
 
 			/**
 			 * used to normalize
 			 */
 			float totalSpectrum = 0;
+			
+			/**
+			 * prepare the data for the next iteration
+			 */
+			if (previousPhase == null) {
+				previousPhase = new double[phase.length];
+			}
+			if (antePreviousPhase == null) {
+				antePreviousPhase = new double[phase.length];
+			}			
 
 			/*
 			 * iterate though the bins and sum the modulus of the phase
@@ -186,13 +196,6 @@ public class PhaseDeviation extends DetectionFunction {
 			/**
 			 * prepare the data for the next iteration
 			 */
-			if (previousPhase == null) {
-				previousPhase = new double[phase.length];
-			}
-			if (antePreviousPhase == null) {
-				antePreviousPhase = new double[phase.length];
-			}
-
 			// the previous phase in the following iteration is the
 			// current phase of this iteration
 			System.arraycopy(phase, 0, previousPhase, 0, phase.length);

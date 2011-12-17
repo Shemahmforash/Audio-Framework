@@ -170,7 +170,7 @@ public class PhaseDeviation extends DetectionFunction {
 			 * imaginary/real results only to this index is correct
 			 */
 			for (int i = 0; i < components.spectrum.length; i++) {
-				if (useWeighting == false) {
+				if (!useWeighting) {
 					phaseDeviation += Math.abs(phase[i] - 2 * previousPhase[i]
 							+ antePreviousPhase[i]);
 				} else {

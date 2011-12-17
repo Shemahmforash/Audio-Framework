@@ -102,6 +102,16 @@ public class PeakDetector {
 		this.detectionFunction = detectionFunction;
 	}
 
+	public PeakDetector(final ArrayList<Float> detectionFunction,
+			int thresholdWindowSize, float multiplier,
+			boolean useLocalMaxAsPeakSelectionCondition) {
+		super();
+		this.detectionFunction = detectionFunction;
+		this.thresholdWindowSize = thresholdWindowSize;
+		this.multiplier = multiplier;
+		this.useLocalMaxAsPeakSelectionCondition = useLocalMaxAsPeakSelectionCondition;
+	}
+
 	/**
 	 * Instantiates this class by passing the Detection Function and the
 	 * parameters that'll be used to calculate the threshold and the peaks.
@@ -122,11 +132,13 @@ public class PeakDetector {
 			int peakSelectionWindowSize) {
 		super();
 		this.thresholdWindowSize = thresholdWindowSize;
+		this.multiplier = multiplier;
+		this.detectionFunction = detectionFunction;
 		this.peakSelectionWindowSize = peakSelectionWindowSize;
 		this.useLocalMaxAsPeakSelectionCondition = useLocalMaxAsPeakSelectionCondition;
-		this.multiplier = multiplier;
+
 	}
-	
+
 	private void normalizeDetectionFunction() {
 		float max = Collections.max(this.detectionFunction);
 		for (int i = 0; i < detectionFunction.size(); i++) {
@@ -227,7 +239,7 @@ public class PeakDetector {
 	 */
 	public void calcPeaks() {
 
-		//first one normalizes the detection function
+		// first one normalizes the detection function
 		this.normalizeDetectionFunction();
 		/*
 		 * the threshold and filtered detectionFunction are needed in order to
@@ -252,7 +264,7 @@ public class PeakDetector {
 			if (filteredDetectionFunction.get(i) > filteredDetectionFunction
 					.get(i + 1)) {
 				peaks.add(filteredDetectionFunction.get(i));
-				// peaks.add((float)1);
+				//peaks.add((float)1);
 			}
 
 			else

@@ -23,30 +23,33 @@ public class ExampleOnsetDetectionChooseMethodology {
 	// public static final String FILE =
 	// "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/6-three.wav";
 	
-	/*public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/realorgan3.wav";
+	public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/realorgan3.wav";
 	public static final String groundTruth = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/ground-truth/realorgan3.txt";
-	public static final String myResult = "/home/wanderer/corpus/results-2011-08-30/SFonsets_mult=1.6/realorgan3.txt";*/
+	public static final String myResult = "/home/wanderer/corpus/results-2011-08-30/SFonsets_mult=1.6/realorgan3.txt";
 	
-	public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/6-three.wav";
+	/*public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/6-three.wav";
 	public static final String groundTruth = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/ground-truth/6-three.txt";
-	public static final String myResult = "/home/wanderer/corpus/results-2011-08-30/SFonsets_mult=1.6/6-three.txt";
+	public static final String myResult = "/home/wanderer/corpus/results-2011-08-30/SFonsets_mult=1.6/6-three.txt";*/
 	
 	/*public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/RM-C002.wav";
 	public static final String groundTruth = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/ground-truth/RM-C002.txt";
 	public static final String myResult = "/home/wanderer/corpus/results-2011-08-30/SFonsets_mult=1.6/RM-C002.txt";*/
+	
+	/*public static final String FILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/RM-C027.wav";
+	public static final String groundTruth = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/ground-truth/RM-C027.txt";
+	public static final String myResult = "/home/wanderer/corpus/results-2011-08-30/SFonsets_mult=1.6/RM-C027.txt";*/
 
 	/**
 	 * Define the methodology
 	 */
 	public static OnsetMethodology methodology = OnsetMethodology.SpectralFlux;
-
 	public static final int sampleWindowSize = 1024;
 
 	public static final int hopSize = 512;
 
 	public static final int thresholdWindowSize = 10;
 
-	public static final float multiplier = 1.5f;
+	public static final float multiplier = 1.3f;
 
 	/**
 	 * @param args
@@ -114,7 +117,7 @@ public class ExampleOnsetDetectionChooseMethodology {
 		 */
 		PeakDetector peaks = new PeakDetector(
 				onsetDetector.getDetectionFunction(), thresholdWindowSize,
-				multiplier);
+				multiplier, true);
 
 		/*
 		 * calculates the peaks
@@ -129,17 +132,14 @@ public class ExampleOnsetDetectionChooseMethodology {
 		Plot plot = new Plot(methodology.toString() + "(multiplier = "
 				+ multiplier + ")", 800, 600);
 
-		plot.plot(peaks.getThreshold(), 1, Color.red);
+		//plot.plot(peaks.getThreshold(), 1, Color.red);
 		plot.plot(onsetDetector.getDetectionFunction(), 1, Color.green);
 		
 		//plot.plot(peaks.getPeaks(), 1, Color.CYAN);
 		
 		plot.plotFromFile(new FileInputStream(groundTruth), hopSize, decoder.getSampleRate(), Color.blue);
-		//plot.plotFromFile(new FileInputStream(myResult), hopSize, decoder.getSampleRate(), Color.magenta);
+		plot.plotFromFile(new FileInputStream(myResult), hopSize, decoder.getSampleRate(), Color.magenta);
 		
-		
-		// plot.plot(peaks.getPeaks(), 1, Color.blue);
-
 		plot.PlayInPlot(hopSize, new WavDecoder(new FileInputStream(FILE)));
 
 	}

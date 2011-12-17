@@ -20,10 +20,10 @@ import com.icdif.audio.io.WavDecoder;
  */
 public class ExampleSpectralDifference {
 
-	public static final String FILE = "/media/Lacie/musica/Rock/Nirvana - Greatest Hits/11.Rape me.mp3";
-
 	// public static final String FILE =
-	// "/home/wanderer/samples/teste-wav2.wav";
+	// "/media/Lacie/musica/Rock/Nirvana - Greatest Hits/11.Rape me.mp3";
+
+	public static final String FILE = "/home/wanderer/samples/08. A Poesia.mp3";
 
 	/**
 	 * @param args
@@ -47,7 +47,7 @@ public class ExampleSpectralDifference {
 		int hop = 512;
 
 		SpectralDifference spectDiff = new SpectralDifference(decoder,
-				windowSize, hop, true, 44100);
+				windowSize, hop, true);
 
 		Plot plot = new Plot("Spectral Difference", 800, 600);
 
@@ -59,17 +59,20 @@ public class ExampleSpectralDifference {
 		// here we use 1 sample per pixel, i.e., 1 sample per window, because
 		// the spectral difference is a function that has a single value per
 		// window
-		plot.plot(spectDiff.getSpectralDifference(), 1, Color.green);
+		// plot.plot(spectDiff.getSpectralDifference(), 1, Color.green);
 
 		// instantiates the peak detector, by passing the spectral difference
 		// already calculated
-		// PeakDetector peaks = new
-		// PeakDetector(spectDiff.getSpectralDifference());
+		PeakDetector peaks = new PeakDetector(spectDiff.getSpectralDifference());
 
 		// calculates the peaks
-		// peaks.calcPeaks();
+		peaks.calcPeaks();
 
-		// plot.plot(peaks.getThreshold(), 1, Color.red);
+		plot.plot(spectDiff.getSpectralDifference(), 1, Color.blue);
+		plot.plot(peaks.getThreshold(), 1, Color.red);
+		plot.plot(peaks.getPeaks(), 1, Color.yellow);
+
+		// plot.plot(peaks.getPeaks(), 1, Color.red);
 
 		// the samples per pixel has to be equal to the hopping size supplied to
 		// the spectral difference
@@ -80,11 +83,11 @@ public class ExampleSpectralDifference {
 		 * new FileInputStream(FILE)));
 		 */
 
-		// plot.PlayInPlot(hop, new MP3Decoder(new FileInputStream(FILE)));
+		plot.PlayInPlot(hop, new MP3Decoder(new FileInputStream(FILE)));
 
 		// float miii = 512f;
 
-		plot.PlayInPlot(hop, new WavDecoder(new FileInputStream(FILE)));
+		// plot.PlayInPlot(hop, new WavDecoder(new FileInputStream(FILE)));
 
 	}
 

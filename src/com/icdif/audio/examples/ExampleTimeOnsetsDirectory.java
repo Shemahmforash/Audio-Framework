@@ -13,7 +13,7 @@ import com.icdif.audio.io.WavDecoder;
 public class ExampleTimeOnsetsDirectory {
 
 	public static final File DIRECTORY = new File(
-			"/home/wanderer/Área de Trabalho/corpus_wav/");
+			"/home/wanderer/Área de Trabalho/corpus/");
 
 	/**
 	 * @param args
@@ -36,13 +36,13 @@ public class ExampleTimeOnsetsDirectory {
 					WavDecoder decoder = new WavDecoder(new FileInputStream(
 							DIRECTORY + "/" + filename));
 					SpectralDifference spectDiff = new SpectralDifference(
-							decoder, 1024, 512, true, 44100);
+							decoder, 1024, 512, true);
 
 					// instantiates the peak detector, by passing the spectral
 					// difference
 					// already calculateds
-					PeakDetector peaks = new PeakDetector(spectDiff
-							.getSpectralDifference());
+					PeakDetector peaks = new PeakDetector(
+							spectDiff.getSpectralDifference());
 
 					// calculates the peaks
 					peaks.calcPeaks();
@@ -51,22 +51,21 @@ public class ExampleTimeOnsetsDirectory {
 					// ao
 					// hopsize
 					ArrayList<Double> onsets = peaks.getPeaksAsInstantsInTime(
-							512, 44100);
+							512, (int) decoder.getSampleRate());
 
-					peaks
-							.printOnsetsToFile(DIRECTORY + "/onsets/" + filename
-									+ ".txt");
+					peaks.printOnsetsToFile(DIRECTORY + "/onsets/" + filename
+							+ ".txt");
 				} else if (filename.endsWith(".mp3")) {
 					MP3Decoder decoder = new MP3Decoder(new FileInputStream(
 							DIRECTORY + "/" + filename));
 					SpectralDifference spectDiff = new SpectralDifference(
-							decoder, 1024, 512, true, 44100);
+							decoder, 1024, 512, true);
 
 					// instantiates the peak detector, by passing the spectral
 					// difference
 					// already calculateds
-					PeakDetector peaks = new PeakDetector(spectDiff
-							.getSpectralDifference());
+					PeakDetector peaks = new PeakDetector(
+							spectDiff.getSpectralDifference());
 
 					// calculates the peaks
 					peaks.calcPeaks();
@@ -75,11 +74,10 @@ public class ExampleTimeOnsetsDirectory {
 					// ao
 					// hopsize
 					ArrayList<Double> onsets = peaks.getPeaksAsInstantsInTime(
-							512, 44100);
+							512, (int) decoder.getSampleRate());
 
-					peaks
-							.printOnsetsToFile(DIRECTORY + "/onsets/" + filename
-									+ ".txt");
+					peaks.printOnsetsToFile(DIRECTORY + "/onsets/" + filename
+							+ ".txt");
 				}
 			}
 		}

@@ -68,7 +68,7 @@ public class ExamplePeakDetector {
 		WavDecoder decoder = new WavDecoder(new FileInputStream(FILE));
 
 		SpectralDifference spectDiff = new SpectralDifference(decoder, 1024,
-				512, true, (int) decoder.getSampleRate());
+				512, true);
 
 		// instantiates the peak detector, by passing the spectral difference
 		// already calculated

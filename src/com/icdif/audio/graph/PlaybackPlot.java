@@ -56,7 +56,7 @@ public class PlaybackPlot {
 			if (startTime == 0)
 				startTime = System.nanoTime();
 
-			// TODO: Pq a divisão por 1 x 10^-9 ???
+			// The division by 1 x 10^-9 converts the nanotime to seconds
 			float elapsedTime = (System.nanoTime() - startTime) / 1000000000.0f;
 
 			// this gives us the position, in pixels, of the marker at the

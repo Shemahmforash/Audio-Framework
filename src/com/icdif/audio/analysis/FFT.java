@@ -57,7 +57,8 @@ public class FFT extends FourierTransform {
 	}
 
 	protected void allocateArrays() {
-		spectrum = new float[timeSize / 2 + 1];
+		//spectrum = new float[timeSize / 2 + 1];
+		spectrum = new float[timeSize];
 		real = new float[timeSize];
 		imag = new float[timeSize];
 	}

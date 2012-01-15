@@ -127,10 +127,12 @@ public class PhaseDeviation extends DetectionFunction {
 	 * Calculate and set the phase deviation
 	 */
 	public void calcPhaseDeviation() {
+		// saves the result of the FFT in an object that contains the spectrum,
+		// real and imaginary part.
 		FFTComponents components = this.nextPhase();
-		double[] phase = null;
-		double[] previousPhase = null;
-		double[] antePreviousPhase = null;
+		double[] phase = new double[components.real.length];
+		double[] previousPhase = new double[components.real.length];
+		double[] antePreviousPhase = new double[components.real.length];
 
 		do {
 
@@ -138,23 +140,22 @@ public class PhaseDeviation extends DetectionFunction {
 			 * get the phase from the components object
 			 */
 			phase = calcPhaseFromComponents(components);
-			
+
 			double phaseDeviation = 0;
 
 			/**
 			 * used to normalize
 			 */
 			float totalSpectrum = 0;
-			
+
 			/**
 			 * prepare the data for the next iteration
 			 */
-			if (previousPhase == null) {
-				previousPhase = new double[phase.length];
-			}
-			if (antePreviousPhase == null) {
-				antePreviousPhase = new double[phase.length];
-			}			
+			/*
+			 * if (previousPhase == null) { previousPhase = new
+			 * double[phase.length]; } if (antePreviousPhase == null) {
+			 * antePreviousPhase = new double[phase.length]; }
+			 */
 
 			/*
 			 * iterate though the bins and sum the modulus of the phase
@@ -196,9 +197,6 @@ public class PhaseDeviation extends DetectionFunction {
 			/**
 			 * prepare the data for the next iteration
 			 */
-			// the previous phase in the following iteration is the
-			// current phase of this iteration
-			System.arraycopy(phase, 0, previousPhase, 0, phase.length);
 
 			// the antepreviousphase in the next iteration is the previous phase
 			// in this iteration
@@ -206,6 +204,10 @@ public class PhaseDeviation extends DetectionFunction {
 				System.arraycopy(previousPhase, 0, antePreviousPhase, 0,
 						phase.length);
 			}
+
+			// the previous phase in the following iteration is the
+			// current phase of this iteration
+			System.arraycopy(phase, 0, previousPhase, 0, phase.length);
 
 		} while ((components = this.nextPhase()) != null);
 	}

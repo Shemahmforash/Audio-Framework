@@ -98,7 +98,7 @@ public class ComplexDomain extends DetectionFunction {
 			float complex = 0;
 
 			float targetValue = 0;
-			
+
 			/**
 			 * prepare the data for the next iteration
 			 */
@@ -109,21 +109,27 @@ public class ComplexDomain extends DetectionFunction {
 				antePreviousPhase = new double[phase.length];
 			}
 
-			for (int i = 0; i < components.spectrum.length; i++) {				
-				targetValue = (float) Math.abs(Math.abs(lastSpectrum[i])
-						* Math.exp(2 * previousPhase[i] - antePreviousPhase[i]));
+			for (int i = 0; i < components.spectrum.length; i++) {
+				targetValue = (float) Math
+						.abs(Math.abs(lastSpectrum[i])
+								* Math.exp(2 * previousPhase[i]
+										- antePreviousPhase[i]));
 
 				if (!isRectified) {
-					/*complex += Math.sqrt((spectrum[i] - targetValue)
-							* (spectrum[i] - targetValue));*/
+					/*
+					 * complex += Math.sqrt((spectrum[i] - targetValue)
+					 * (spectrum[i] - targetValue));
+					 */
 					complex += Math.abs(spectrum[i] - targetValue);
 				} else {
 					// when there is rectification, one only sums the values
 					// when the current spectrum is bigger than the previous one
 
 					if (spectrum[i] > lastSpectrum[i]) {
-						/*complex += Math.sqrt((spectrum[i] - targetValue)
-								* (spectrum[i] - targetValue));*/
+						/*
+						 * complex += Math.sqrt((spectrum[i] - targetValue)
+						 * (spectrum[i] - targetValue));
+						 */
 						complex += Math.abs(spectrum[i] - targetValue);
 					}
 				}
@@ -138,16 +144,16 @@ public class ComplexDomain extends DetectionFunction {
 			// currentSpectrum of this iteration
 			System.arraycopy(spectrum, 0, lastSpectrum, 0, spectrum.length);
 
-			// the previous phase in the following iteration is the
-			// current phase of this iteration
-			System.arraycopy(phase, 0, previousPhase, 0, phase.length);
-
 			// the antepreviousphase in the next iteration is the previous phase
 			// in this iteration
 			if (previousPhase != null) {
 				System.arraycopy(previousPhase, 0, antePreviousPhase, 0,
 						phase.length);
 			}
+
+			// the previous phase in the following iteration is the
+			// current phase of this iteration
+			System.arraycopy(phase, 0, previousPhase, 0, phase.length);
 
 		} while ((components = this.nextPhase()) != null);
 

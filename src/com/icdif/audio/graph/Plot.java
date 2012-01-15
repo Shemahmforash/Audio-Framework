@@ -442,6 +442,29 @@ public class Plot {
 		in.close();
 	}
 
+	public void plotFromTimeInstants(ArrayList<Double> onsets,
+			final float samplesPerPixel, final float sampleRate,
+			final Color color) {
+		/**
+		 * Instantiates the object responsible for drawing the lines and sets
+		 * the line colors.
+		 */
+		Graphics2D graph = buffImage.createGraphics();
+		graph.setColor(color);
+		
+		int position = 0;
+		
+		for (int i = 0; i < onsets.size(); i++) {
+			/**
+			 * converts the onset (seconds) to pixels in order to find a
+			 * position of the onset in the plot
+			 */
+			position = (int) ((int) (onsets.get(i) * sampleRate) / samplesPerPixel);
+			// System.out.println(position);
+			graph.drawLine(position, 0, position, buffImage.getHeight());
+		}
+	}
+
 	/**
 	 * This method plots the samples, with the Window defined as parameter. It
 	 * can used the scale of the last plot and a vertical offset.

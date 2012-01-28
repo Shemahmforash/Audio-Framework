@@ -139,12 +139,26 @@ public class PeakDetector {
 
 	}
 
+	/**
+	 * Normalizes and makes a vertical shift so the mean of the function is zero.
+	 */
 	private void normalizeDetectionFunction() {
 		float max = Collections.max(this.detectionFunction);
+		
+		float total = 0;
+		
+		//normalization
 		for (int i = 0; i < detectionFunction.size(); i++) {
 			detectionFunction.set(i, detectionFunction.get(i) / max);
+			total += detectionFunction.get(i);
 		}
-	}
+		
+		//now make a shift so that the average will be zero
+		float meanvalue = total / detectionFunction.size();
+		for (int i = 0; i < detectionFunction.size(); i++) {
+			detectionFunction.set(i, detectionFunction.get(i) - meanvalue);
+		}
+	} 
 
 	/**
 	 * For each value in the Detection Function, we calculate the average of the
@@ -239,8 +253,9 @@ public class PeakDetector {
 	 */
 	public void calcPeaks() {
 
-		// first one normalizes the detection function
+		// first one normalizes the detection function and makes the mean to be zero 
 		this.normalizeDetectionFunction();
+		
 		/*
 		 * the threshold and filtered detectionFunction are needed in order to
 		 * calculate the peaks

@@ -84,9 +84,9 @@ public class ComplexDomain extends DetectionFunction {
 		FFTComponents components = this.nextPhase();
 		float[] spectrum = components.spectrum;
 		float[] lastSpectrum = new float[spectrum.length];
-		double[] phase = null;
-		double[] previousPhase = null;
-		double[] antePreviousPhase = null;
+		double[] phase = new double[components.real.length];
+		double[] previousPhase = new double[components.real.length];
+		double[] antePreviousPhase = new double[components.real.length];
 
 		do {
 
@@ -97,39 +97,28 @@ public class ComplexDomain extends DetectionFunction {
 
 			float complex = 0;
 
-			float targetValue = 0;
+			double targetValue = 0;
 
 			/**
 			 * prepare the data for the next iteration
 			 */
-			if (previousPhase == null) {
-				previousPhase = new double[phase.length];
-			}
-			if (antePreviousPhase == null) {
-				antePreviousPhase = new double[phase.length];
-			}
+			/*
+			 * if (previousPhase == null) { previousPhase = new
+			 * double[phase.length]; } if (antePreviousPhase == null) {
+			 * antePreviousPhase = new double[phase.length]; }
+			 */
 
 			for (int i = 0; i < components.spectrum.length; i++) {
-				targetValue = (float) Math
-						.abs(Math.abs(lastSpectrum[i])
+				targetValue = Math.abs(lastSpectrum[i])
 								* Math.exp(2 * previousPhase[i]
-										- antePreviousPhase[i]));
-
+										- antePreviousPhase[i]);
 				if (!isRectified) {
-					/*
-					 * complex += Math.sqrt((spectrum[i] - targetValue)
-					 * (spectrum[i] - targetValue));
-					 */
+
 					complex += Math.abs(spectrum[i] - targetValue);
 				} else {
 					// when there is rectification, one only sums the values
 					// when the current spectrum is bigger than the previous one
-
 					if (spectrum[i] > lastSpectrum[i]) {
-						/*
-						 * complex += Math.sqrt((spectrum[i] - targetValue)
-						 * (spectrum[i] - targetValue));
-						 */
 						complex += Math.abs(spectrum[i] - targetValue);
 					}
 				}
@@ -148,7 +137,7 @@ public class ComplexDomain extends DetectionFunction {
 			// in this iteration
 			if (previousPhase != null) {
 				System.arraycopy(previousPhase, 0, antePreviousPhase, 0,
-						phase.length);
+						previousPhase.length);
 			}
 
 			// the previous phase in the following iteration is the

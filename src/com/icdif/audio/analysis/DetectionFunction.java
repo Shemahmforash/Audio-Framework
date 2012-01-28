@@ -198,6 +198,8 @@ public abstract class DetectionFunction {
 		// it jumps by an amount defined as the hopping Size
 		currentSample += hopSize;
 
+		
+		componentsFFT = new FFTComponents();
 		/**
 		 * Sets the attributes of the inner class
 		 */
@@ -222,7 +224,7 @@ public abstract class DetectionFunction {
 	protected double[] calcPhaseFromComponents(final FFTComponents component) {
 		double[] phase = new double[component.real.length];
 
-		for (int i = 0; i < component.real.length; i++) {
+		for (int i = 0; i < component.spectrum.length; i++) {
 			phase[i] = calcPhase(component.real[i], component.imaginary[i]);
 			if(phase[i] > Math.PI || phase[i] < -Math.PI) {
 				System.out.println("NOT BETWEEM -PI and PI: Phase[" + i + "] = " + phase[i]);

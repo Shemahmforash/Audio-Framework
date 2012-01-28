@@ -166,10 +166,6 @@ public class PhaseDeviation extends DetectionFunction {
 			 * and, for the weighting, the formula 2.4 in Simon Dixon
 			 * "Onset Detection Revisited"
 			 */
-			/*
-			 * TODO:Check if running only to spectrum.length and using the
-			 * imaginary/real results only to this index is correct
-			 */
 			for (int i = 0; i < components.spectrum.length; i++) {
 				if (!useWeighting) {
 					phaseDeviation += Math.abs(phase[i] - 2 * previousPhase[i]

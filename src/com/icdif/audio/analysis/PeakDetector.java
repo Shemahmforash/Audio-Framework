@@ -4,6 +4,7 @@
 package com.icdif.audio.analysis;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.io.*;
 
@@ -140,25 +141,79 @@ public class PeakDetector {
 	}
 
 	/**
-	 * Normalizes and makes a vertical shift so the mean of the function is zero.
+	 * Normalizes and makes a vertical shift so the mean of the function is
+	 * zero.
 	 */
 	private void normalizeDetectionFunction() {
 		float max = Collections.max(this.detectionFunction);
-		
+
 		float total = 0;
-		
-		//normalization
+
+		// normalization
 		for (int i = 0; i < detectionFunction.size(); i++) {
 			detectionFunction.set(i, detectionFunction.get(i) / max);
 			total += detectionFunction.get(i);
 		}
-		
-		//now make a shift so that the average will be zero
+
+		// now make a shift so that the average will be zero
 		float meanvalue = total / detectionFunction.size();
 		for (int i = 0; i < detectionFunction.size(); i++) {
 			detectionFunction.set(i, detectionFunction.get(i) - meanvalue);
 		}
-	} 
+	}
+
+	/**
+	 * Finds the maximum absiolute deviation of an array
+	 * 
+	 * @param values
+	 * @return
+	 */
+	private float findMaxAbsoluteDeviation(final ArrayList<Float> values) {
+
+		ArrayList<Float> absoluteDeviation = new ArrayList<Float>();
+
+		float mean = this.findAverage(values);
+		for (int i = 0; i < values.size(); i++) {
+			absoluteDeviation.set(i, Math.abs(values.get(i)));
+		}
+
+		float maxAbsDeviation = Collections.max(absoluteDeviation);
+
+		return maxAbsDeviation;
+	}
+
+	/**
+	 * Finds the average values of an array
+	 * 
+	 * @param values
+	 * @return
+	 */
+	private float findAverage(final ArrayList<Float> values) {
+		float total = 0;
+
+		for (int i = 0; i < values.size(); i++) {
+			total += values.get(i);
+		}
+		float meanvalue = total / detectionFunction.size();
+
+		return meanvalue;
+	}
+
+	/**
+	 * Finds the median value of an array
+	 * @param values
+	 * @return
+	 */
+	public double findMedian(final ArrayList<Float> values) {
+
+		Collections.sort(values);
+
+		if (values.size() % 2 == 0) {
+			return (values.get((values.size() / 2) - 1) + values.get(values.size() / 2)) / 2.0;
+		} else {
+			return values.get(values.size() / 2);
+		}
+	}
 
 	/**
 	 * For each value in the Detection Function, we calculate the average of the
@@ -253,9 +308,10 @@ public class PeakDetector {
 	 */
 	public void calcPeaks() {
 
-		// first one normalizes the detection function and makes the mean to be zero 
+		// first one normalizes the detection function and makes the mean to be
+		// zero
 		this.normalizeDetectionFunction();
-		
+
 		/*
 		 * the threshold and filtered detectionFunction are needed in order to
 		 * calculate the peaks
@@ -279,7 +335,7 @@ public class PeakDetector {
 			if (filteredDetectionFunction.get(i) > filteredDetectionFunction
 					.get(i + 1)) {
 				peaks.add(filteredDetectionFunction.get(i));
-				//peaks.add((float)1);
+				// peaks.add((float)1);
 			}
 
 			else

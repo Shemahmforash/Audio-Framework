@@ -161,9 +161,27 @@ public class PeakDetector {
 			detectionFunction.set(i, detectionFunction.get(i) - meanvalue);
 		}
 	}
+	
+	private void normalizeDetectionFunction(String type) {
+		//no type use traditional way
+		if(type == "" || type == "traditional") {
+			this.normalizeDetectionFunction();
+		}
+		else if(type == "Bello") {
+			//normalized by subtracting the mean and dividing by the maximum absolute deviation, and then low-pass filtered
+			float meanvalue = this.findAverage(detectionFunction);
+			float maxAbsDev = this.findMaxAbsoluteDeviation(detectionFunction);
+			for (int i = 0; i < detectionFunction.size(); i++) {
+				detectionFunction.set(i, (detectionFunction.get(i) - meanvalue) / maxAbsDev);
+			}
+			
+			//TODO: Low pass filter:
+			
+		}
+	}
 
 	/**
-	 * Finds the maximum absiolute deviation of an array
+	 * Finds the maximum absolute deviation of an array
 	 * 
 	 * @param values
 	 * @return
@@ -204,12 +222,12 @@ public class PeakDetector {
 	 * @param values
 	 * @return
 	 */
-	public double findMedian(final ArrayList<Float> values) {
+	public float findMedian(final ArrayList<Float> values) {
 
 		Collections.sort(values);
 
 		if (values.size() % 2 == 0) {
-			return (values.get((values.size() / 2) - 1) + values.get(values.size() / 2)) / 2.0;
+			return (values.get((values.size() / 2) - 1) + values.get(values.size() / 2)) / 2;
 		} else {
 			return values.get(values.size() / 2);
 		}
@@ -238,6 +256,32 @@ public class PeakDetector {
 			mean /= (end - start);
 			threshold.add(mean * multiplier);
 		}
+	}
+	
+	private void calcThreshold(String type) {
+		if ( type == "" || type == "mean") {
+			this.calcThreshold();
+		}
+		else if(type == "median") {
+			for (int i = 0; i < detectionFunction.size(); i++) {
+				// the window starts at 0 or at the current value -
+				// THRESHOLD_WINDOW_SIZE
+				int start = Math.max(0, i - thresholdWindowSize);
+
+				// the same here, it ends at the last value, or at the current value
+				// + THRESHOLD_WINDOW_SIZE
+				int end = Math.min(detectionFunction.size() - 1, i
+						+ thresholdWindowSize);
+				
+				ArrayList<Float> tmpValues = new ArrayList<Float>();
+				for (int j = start; j <= end; j++)
+					tmpValues.add(detectionFunction.get(j));
+				float median = this.findMedian(tmpValues);
+				
+				threshold.add(median * multiplier);
+			}
+		}
+		
 	}
 
 	/**

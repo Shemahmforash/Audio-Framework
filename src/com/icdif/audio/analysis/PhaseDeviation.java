@@ -151,11 +151,6 @@ public class PhaseDeviation extends DetectionFunction {
 			/**
 			 * prepare the data for the next iteration
 			 */
-			/*
-			 * if (previousPhase == null) { previousPhase = new
-			 * double[phase.length]; } if (antePreviousPhase == null) {
-			 * antePreviousPhase = new double[phase.length]; }
-			 */
 
 			/*
 			 * iterate though the bins and sum the modulus of the phase
@@ -175,7 +170,7 @@ public class PhaseDeviation extends DetectionFunction {
 							.abs(components.spectrum[i]
 									* (phase[i] - 2 * previousPhase[i] + antePreviousPhase[i]));
 				}
-				if (useNormalization == true) {
+				if (useNormalization) {
 					totalSpectrum += Math.abs(components.spectrum[i]);
 				}
 			}
@@ -184,10 +179,14 @@ public class PhaseDeviation extends DetectionFunction {
 			 * Adds the phase deviation to the list, dividing the result
 			 * obtained with the number of bins or doing the normalization
 			 */
-			if (useNormalization == false) {
+			if (!useNormalization) {
 				PD.add((float) phaseDeviation / components.spectrum.length);
 			} else {
-				PD.add((float) (phaseDeviation / totalSpectrum));
+				//to avoid division by zero
+				if(totalSpectrum == 0) {
+					totalSpectrum = 1;
+				}
+				PD.add((float) phaseDeviation / totalSpectrum);
 			}
 
 			/**

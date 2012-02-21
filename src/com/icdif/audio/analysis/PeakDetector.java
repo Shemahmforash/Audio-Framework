@@ -368,6 +368,18 @@ public class PeakDetector {
 		}
 	}
 
+	private void calcFilteredDetectionFunction(String type) {
+		if (type == "" || type == "traditional") {
+			this.calcFilteredDetectionFunction();
+		} else if (type == "Bello") {
+			for (int i = 0; i < threshold.size(); i++) {
+				filteredDetectionFunction.add(detectionFunction.get(i)
+						- threshold.get(i));
+			}
+		}
+
+	}
+
 	/**
 	 * Fills the array containing the peaks. Any value > 0 in this array is a
 	 * peak. In order to calculate the peaks, it needs to calculate the
@@ -407,6 +419,36 @@ public class PeakDetector {
 
 			else
 				peaks.add((float) 0);
+		}
+	}
+
+	public void calcPeaks(String type) {
+		if (type == "" || type == "traditional") {
+			this.calcPeaks();
+		} else if (type == "Bello") {
+			// preprocessing
+			this.normalizeDetectionFunction("Bello");
+
+			// thresholding
+			this.calcThreshold("Bello");
+
+			// DF - threshold
+			this.calcFilteredDetectionFunction("Bello");
+
+			for (int i = 0; i < filteredDetectionFunction.size() - 1; i++) {
+				/*
+				 * in the filtered detection function, a peak is a value bigger
+				 * than the next value
+				 */
+				if (filteredDetectionFunction.get(i) > filteredDetectionFunction
+						.get(i + 1) && filteredDetectionFunction.get(i) > 0) {
+					peaks.add(filteredDetectionFunction.get(i));
+					// peaks.add((float)1);
+				}
+
+				else
+					peaks.add((float) 0);
+			}
 		}
 	}
 

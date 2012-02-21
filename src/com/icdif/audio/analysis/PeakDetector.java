@@ -161,22 +161,24 @@ public class PeakDetector {
 			detectionFunction.set(i, detectionFunction.get(i) - meanvalue);
 		}
 	}
-	
+
 	private void normalizeDetectionFunction(String type) {
-		//no type use traditional way
-		if(type == "" || type == "traditional") {
+		// no type use traditional way
+		if (type == "" || type == "traditional") {
 			this.normalizeDetectionFunction();
-		}
-		else if(type == "Bello") {
-			//normalized by subtracting the mean and dividing by the maximum absolute deviation, and then low-pass filtered
+		} else if (type == "Bello") {
+			// normalized by subtracting the mean and dividing by the maximum
+			// absolute deviation, and then low-pass filtered
 			float meanvalue = this.findAverage(detectionFunction);
 			float maxAbsDev = this.findMaxAbsoluteDeviation(detectionFunction);
 			for (int i = 0; i < detectionFunction.size(); i++) {
-				detectionFunction.set(i, (detectionFunction.get(i) - meanvalue) / maxAbsDev);
+				detectionFunction.set(i, (detectionFunction.get(i) - meanvalue)
+						/ maxAbsDev);
 			}
-			
-			//TODO: Low pass filter:
-			
+
+			// Simple IIR low pass filter
+			detectionFunction = this.lowPassFilter(detectionFunction);
+
 		}
 	}
 
@@ -201,7 +203,7 @@ public class PeakDetector {
 	}
 
 	/**
-	 * Finds the average values of an array
+	 * Finds the average value of an array
 	 * 
 	 * @param values
 	 * @return
@@ -219,6 +221,7 @@ public class PeakDetector {
 
 	/**
 	 * Finds the median value of an array
+	 * 
 	 * @param values
 	 * @return
 	 */
@@ -227,10 +230,31 @@ public class PeakDetector {
 		Collections.sort(values);
 
 		if (values.size() % 2 == 0) {
-			return (values.get((values.size() / 2) - 1) + values.get(values.size() / 2)) / 2;
+			return (values.get((values.size() / 2) - 1) + values.get(values
+					.size() / 2)) / 2;
 		} else {
 			return values.get(values.size() / 2);
 		}
+	}
+
+	/**
+	 * Low pass filters (IIR) an array of values
+	 * 
+	 * @param input
+	 * @return
+	 */
+	public ArrayList<Float> lowPassFilter(final ArrayList<Float> input) {
+		double alpha = 0.15;
+		ArrayList<Float> smoothed = new ArrayList<Float>();
+
+		double x0 = 0;
+
+		for (int i = 0; i < input.size(); i++) {
+			smoothed.set(i, (float) (alpha * input.get(i) + (1.0 - alpha) * x0));
+			x0 = smoothed.get(i);
+		}
+
+		return smoothed;
 	}
 
 	/**
@@ -257,31 +281,30 @@ public class PeakDetector {
 			threshold.add(mean * multiplier);
 		}
 	}
-	
+
 	private void calcThreshold(String type) {
-		if ( type == "" || type == "mean") {
+		if (type == "" || type == "mean") {
 			this.calcThreshold();
-		}
-		else if(type == "median") {
+		} else if (type == "median") {
 			for (int i = 0; i < detectionFunction.size(); i++) {
 				// the window starts at 0 or at the current value -
 				// THRESHOLD_WINDOW_SIZE
 				int start = Math.max(0, i - thresholdWindowSize);
 
-				// the same here, it ends at the last value, or at the current value
+				// the same here, it ends at the last value, or at the current
+				// value
 				// + THRESHOLD_WINDOW_SIZE
 				int end = Math.min(detectionFunction.size() - 1, i
 						+ thresholdWindowSize);
-				
+
 				ArrayList<Float> tmpValues = new ArrayList<Float>();
 				for (int j = start; j <= end; j++)
 					tmpValues.add(detectionFunction.get(j));
 				float median = this.findMedian(tmpValues);
-				
+
 				threshold.add(median * multiplier);
 			}
 		}
-		
 	}
 
 	/**

@@ -41,7 +41,9 @@ public class PeakDetector {
 	 * bigger than MULTIPLYING_FACTOR * threshold, and is a local maximum then
 	 * it's considered a peak
 	 */
-	private float multiplier = 1.6f;
+	private float lambda = 1.6f;
+
+	private float delta = 0.0f;
 
 	/**
 	 * The Detection Function values that'll be used to calculate the threshold
@@ -92,25 +94,36 @@ public class PeakDetector {
 	 * @param detectionFunction
 	 * @param thresholdWindowSize
 	 *            - by default it is 10 samples in each side
-	 * @param multiplier
+	 * @param lambda
 	 *            - by default it is 1.6
 	 */
 	public PeakDetector(final ArrayList<Float> detectionFunction,
-			final int thresholdWindowSize, final float multiplier) {
+			final int thresholdWindowSize, final float lambda) {
 		super();
 		this.thresholdWindowSize = thresholdWindowSize;
-		this.multiplier = multiplier;
+		this.lambda = lambda;
 		this.detectionFunction = detectionFunction;
 	}
 
 	public PeakDetector(final ArrayList<Float> detectionFunction,
-			int thresholdWindowSize, float multiplier,
+			int thresholdWindowSize, float lambda,
 			boolean useLocalMaxAsPeakSelectionCondition) {
 		super();
 		this.detectionFunction = detectionFunction;
 		this.thresholdWindowSize = thresholdWindowSize;
-		this.multiplier = multiplier;
+		this.lambda = lambda;
 		this.useLocalMaxAsPeakSelectionCondition = useLocalMaxAsPeakSelectionCondition;
+	}
+
+	public PeakDetector(final ArrayList<Float> detectionFunction,
+			int thresholdWindowSize, float lambda,
+			boolean useLocalMaxAsPeakSelectionCondition, float delta) {
+		super();
+		this.detectionFunction = detectionFunction;
+		this.thresholdWindowSize = thresholdWindowSize;
+		this.lambda = lambda;
+		this.useLocalMaxAsPeakSelectionCondition = useLocalMaxAsPeakSelectionCondition;
+		this.delta = delta;
 	}
 
 	/**
@@ -120,7 +133,7 @@ public class PeakDetector {
 	 * @param detectionFunction
 	 * @param thresholdWindowSize
 	 *            by default it is 10 samples in each side
-	 * @param multiplier
+	 * @param lambda
 	 *            by default it is 1.6
 	 * @param useLocalMaxAsPeakSelectionCondition
 	 *            By default it is false
@@ -128,12 +141,12 @@ public class PeakDetector {
 	 *            By default it is 3
 	 */
 	public PeakDetector(final ArrayList<Float> detectionFunction,
-			int thresholdWindowSize, float multiplier,
+			int thresholdWindowSize, float lambda,
 			boolean useLocalMaxAsPeakSelectionCondition,
 			int peakSelectionWindowSize) {
 		super();
 		this.thresholdWindowSize = thresholdWindowSize;
-		this.multiplier = multiplier;
+		this.lambda = lambda;
 		this.detectionFunction = detectionFunction;
 		this.peakSelectionWindowSize = peakSelectionWindowSize;
 		this.useLocalMaxAsPeakSelectionCondition = useLocalMaxAsPeakSelectionCondition;
@@ -279,7 +292,7 @@ public class PeakDetector {
 			for (int j = start; j <= end; j++)
 				mean += detectionFunction.get(j);
 			mean /= (end - start);
-			threshold.add(mean * multiplier);
+			threshold.add(delta + lambda * mean);
 		}
 	}
 
@@ -303,7 +316,7 @@ public class PeakDetector {
 					tmpValues.add(detectionFunction.get(j));
 				float median = this.findMedian(tmpValues);
 
-				threshold.add(median + multiplier);
+				threshold.add(delta + lambda * median);
 			}
 		}
 	}

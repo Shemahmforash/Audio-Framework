@@ -194,7 +194,7 @@ public class PeakDetector {
 
 		float mean = this.findAverage(values);
 		for (int i = 0; i < values.size(); i++) {
-			absoluteDeviation.set(i, Math.abs(values.get(i)));
+			absoluteDeviation.add(Math.abs(values.get(i) - mean));
 		}
 
 		float maxAbsDeviation = Collections.max(absoluteDeviation);
@@ -226,14 +226,15 @@ public class PeakDetector {
 	 * @return
 	 */
 	public float findMedian(final ArrayList<Float> values) {
+		// TODO: ver módulo aqui
 
 		Collections.sort(values);
 
 		if (values.size() % 2 == 0) {
-			return (values.get((values.size() / 2) - 1) + values.get(values
-					.size() / 2)) / 2;
+			return (Math.abs(values.get((values.size() / 2) - 1)) + Math
+					.abs(values.get(values.size() / 2)) / 2);
 		} else {
-			return values.get(values.size() / 2);
+			return values.get(Math.abs(values.size() / 2));
 		}
 	}
 
@@ -250,7 +251,7 @@ public class PeakDetector {
 		double x0 = 0;
 
 		for (int i = 0; i < input.size(); i++) {
-			smoothed.set(i, (float) (alpha * input.get(i) + (1.0 - alpha) * x0));
+			smoothed.add((float) (alpha * input.get(i) + (1.0 - alpha) * x0));
 			x0 = smoothed.get(i);
 		}
 
@@ -302,7 +303,7 @@ public class PeakDetector {
 					tmpValues.add(detectionFunction.get(j));
 				float median = this.findMedian(tmpValues);
 
-				threshold.add(median * multiplier);
+				threshold.add(median + multiplier);
 			}
 		}
 	}
@@ -430,7 +431,7 @@ public class PeakDetector {
 			this.normalizeDetectionFunction("Bello");
 
 			// thresholding
-			this.calcThreshold("Bello");
+			this.calcThreshold("median");// TODO: voltar a meter median
 
 			// DF - threshold
 			this.calcFilteredDetectionFunction("Bello");
@@ -525,7 +526,7 @@ public class PeakDetector {
 	/**
 	 * @return the filteredSpectralFlux
 	 */
-	public ArrayList<Float> getFilteredSpectralFlux() {
+	public ArrayList<Float> getFilteredDetectionFunction() {
 		return filteredDetectionFunction;
 	}
 

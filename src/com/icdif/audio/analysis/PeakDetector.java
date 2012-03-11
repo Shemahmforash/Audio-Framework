@@ -20,7 +20,7 @@ import java.io.*;
 public class PeakDetector {
 
 	/**
-	 * The number of values (for each side) for which we calculate the mean
+	 * The number of values (for each side) for which we calculate the mean/median
 	 */
 	private int thresholdWindowSize = 10;
 
@@ -41,7 +41,7 @@ public class PeakDetector {
 	 * bigger than MULTIPLYING_FACTOR * threshold, and is a local maximum then
 	 * it's considered a peak
 	 */
-	private float lambda = 1.6f;
+	private float lambda = 1.0f;
 
 	private float delta = 0.0f;
 
@@ -195,6 +195,42 @@ public class PeakDetector {
 		}
 	}
 
+	private void normalizeDetectionFunction(String type, boolean useFilter) {
+		// no type use traditional way
+		if (type == "" || type == "traditional") {
+			this.normalizeDetectionFunction();
+		} else if (type == "Bello" || type == "Stdev") {
+			// normalized by subtracting the mean and dividing by the maximum
+			// absolute deviation, and then low-pass filter
+			float meanvalue = this.findAverage(detectionFunction);
+			float maxAbsDev = this.findMaxAbsoluteDeviation(detectionFunction);
+			for (int i = 0; i < detectionFunction.size(); i++) {
+				detectionFunction.set(i, (detectionFunction.get(i) - meanvalue)
+						/ maxAbsDev);
+			}
+
+			// Simple IIR low pass filter
+			if (useFilter) {
+				detectionFunction = this.lowPassFilter(detectionFunction);
+			}
+		} else if (type == "Norm") {
+			float max = Collections.max(this.detectionFunction);
+
+			float meanvalue = this.findAverage(detectionFunction);
+
+			// normalized by subtracting the mean and dividing by the maximum
+			// value, and then optionally low-pass filter
+			for (int i = 0; i < detectionFunction.size(); i++) {
+				detectionFunction.set(i, (detectionFunction.get(i) - meanvalue) / max);
+			}
+			// Simple IIR low pass filter
+			if (useFilter) {
+				detectionFunction = this.lowPassFilter(detectionFunction);
+			}
+
+		}
+	}
+
 	/**
 	 * Finds the maximum absolute deviation of an array
 	 * 
@@ -227,7 +263,7 @@ public class PeakDetector {
 		for (int i = 0; i < values.size(); i++) {
 			total += values.get(i);
 		}
-		float meanvalue = total / detectionFunction.size();
+		float meanvalue = total / values.size();
 
 		return meanvalue;
 	}
@@ -387,8 +423,12 @@ public class PeakDetector {
 			this.calcFilteredDetectionFunction();
 		} else if (type == "Bello") {
 			for (int i = 0; i < threshold.size(); i++) {
-				filteredDetectionFunction.add(detectionFunction.get(i)
-						- threshold.get(i));
+				if (threshold.get(i) <= detectionFunction.get(i)) {
+					filteredDetectionFunction.add(detectionFunction.get(i)
+							- threshold.get(i));
+				} else {
+					filteredDetectionFunction.add((float) 0);
+				}
 			}
 		}
 
@@ -439,15 +479,146 @@ public class PeakDetector {
 	public void calcPeaks(String type) {
 		if (type == "" || type == "traditional") {
 			this.calcPeaks();
-		} else if (type == "Bello") {
-			// preprocessing
+			return;
+		} else if (type == "mean-norm-no-filter") {
+			this.normalizeDetectionFunction();
+
+			this.calcThreshold("mean");
+
+			// don't consider local max
+			this.calcFilteredDetectionFunction("Bello");
+
+		} else if (type == "mean-norm-filter") {
+			//normalize by dividing by the maximum and use a LP filter
+			this.normalizeDetectionFunction("Norm", true);
+
+			this.calcThreshold("mean");
+
+			// don't consider local max
+			this.calcFilteredDetectionFunction("Bello");
+
+		} else if (type == "mean-norm-no-filter-local-max") {
+			this.normalizeDetectionFunction();
+
+			this.calcThreshold("mean");
+
+			// Consider local max as condition for onset
+			this.calcFilteredDetectionFunction("traditional");
+		} else if (type == "mean-norm-filter-local-max") {
+			this.normalizeDetectionFunction("Norm", true);
+
+			this.calcThreshold("mean");
+
+			// Consider local max as condition for onset
+			this.calcFilteredDetectionFunction("traditional");
+		} else if (type == "mean-stdev-no-filter") {
+			// Standard deviation, but no filter
+			this.normalizeDetectionFunction("Bello", false);
+
+			this.calcThreshold("mean");
+
+			// don't consider local max
+			this.calcFilteredDetectionFunction("Bello");
+		} else if (type == "mean-stdev-filter") {
+			// Standard deviation, but no filter
+			this.normalizeDetectionFunction("Stdev", true);
+
+			this.calcThreshold("mean");
+
+			// don't consider local max
+			this.calcFilteredDetectionFunction("Bello");
+		} else if (type == "mean-stdev-no-filter-local-max") {
+			// Standard deviation, but no filter
+			this.normalizeDetectionFunction("Bello", false);
+
+			this.calcThreshold("mean");
+
+			// Consider local max as condition for onset
+			this.calcFilteredDetectionFunction("traditional");
+		} else if (type == "mean-stdev-filter-local-max") {
+			// Standard deviation, but no filter
+			this.normalizeDetectionFunction("Stdev", true);
+
+			this.calcThreshold("mean");
+
+			// Consider local max as condition for onset
+			this.calcFilteredDetectionFunction("traditional");
+		} 
+		
+		else if (type == "median-norm-no-filter") {
+			this.normalizeDetectionFunction();
+
+			this.calcThreshold("median");
+
+			// don't consider local max
+			this.calcFilteredDetectionFunction("Bello");
+
+		} else if (type == "median-norm-filter") {
+			//normalize by dividing by the maximum and use a LP filter
+			this.normalizeDetectionFunction("Norm", true);
+
+			this.calcThreshold("median");
+
+			// don't consider local max
+			this.calcFilteredDetectionFunction("Bello");
+
+		} else if (type == "median-norm-no-filter-local-max") {
+			this.normalizeDetectionFunction();
+
+			this.calcThreshold("median");
+
+			// Consider local max as condition for onset
+			this.calcFilteredDetectionFunction("traditional");
+		} else if (type == "median-norm-filter-local-max") {
+			this.normalizeDetectionFunction("Norm", true);
+
+			this.calcThreshold("median");
+
+			// Consider local max as condition for onset
+			this.calcFilteredDetectionFunction("traditional");
+		} else if (type == "median-stdev-no-filter") {
+			// Standard deviation, but no filter
+			this.normalizeDetectionFunction("Bello", false);
+
+			this.calcThreshold("median");
+
+			// don't consider local max
+			this.calcFilteredDetectionFunction("Bello");
+		} else if (type == "median-stdev-filter") {
+			// Standard deviation, but no filter
+			this.normalizeDetectionFunction("Stdev", true);
+
+			this.calcThreshold("median");
+
+			// don't consider local max
+			this.calcFilteredDetectionFunction("Bello");
+		} else if (type == "median-stdev-no-filter-local-max") {
+			// Standard deviation, but no filter
+			this.normalizeDetectionFunction("Bello", false);
+
+			this.calcThreshold("median");
+
+			// Consider local max as condition for onset
+			this.calcFilteredDetectionFunction("traditional");
+		} else if (type == "median-stdev-filter-local-max") {
+			// Standard deviation, but no filter
+			this.normalizeDetectionFunction("Stdev", true);
+
+			this.calcThreshold("median");
+
+			// Consider local max as condition for onset
+			this.calcFilteredDetectionFunction("traditional");
+		} 
+
+		else if (type == "Bello") {
+			// pre-processing
 			this.normalizeDetectionFunction("Bello");
 
 			// thresholding
 			this.calcThreshold("median");// TODO: voltar a meter median
 
 			// DF - threshold
-			this.calcFilteredDetectionFunction("Bello");
+			this.calcFilteredDetectionFunction("traditional");
 
 			for (int i = 0; i < filteredDetectionFunction.size() - 1; i++) {
 				/*

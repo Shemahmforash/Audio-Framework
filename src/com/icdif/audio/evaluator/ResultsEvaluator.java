@@ -17,7 +17,7 @@ import java.io.StringReader;
  */
 public class ResultsEvaluator {
 
-	private final String GROUNDTRUTHPATH = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/ground-truth/";
+	private String groundTruthPath = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/ground-truth/";
 
 	private int ok;
 
@@ -46,6 +46,11 @@ public class ResultsEvaluator {
 	 */
 	public ResultsEvaluator() {
 		super();
+	}
+	
+	public ResultsEvaluator(String groundTruth) {
+		super();
+		this.groundTruthPath = groundTruth;
 	}
 
 	/**
@@ -90,7 +95,7 @@ public class ResultsEvaluator {
 	public void evaluate(String onsetsFileName, String resultsPath) {
 		File onsetsFile = new File(onsetsFileName);
 
-		CommandExecution CE = new CommandExecution("./eval " + GROUNDTRUTHPATH
+		CommandExecution CE = new CommandExecution("./eval " + groundTruthPath
 				+ getFileNameWithoutExtension(onsetsFileName) + ".txt" + " "
 				+ resultsPath + getFileNameWithoutExtension(onsetsFileName)
 				+ ".wav" + ".txt");
@@ -175,7 +180,7 @@ public class ResultsEvaluator {
 	}
 
 	public String getGROUNDTRUTHPATH() {
-		return GROUNDTRUTHPATH;
+		return groundTruthPath;
 	}
 
 	public int getOk() {

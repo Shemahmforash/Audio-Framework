@@ -109,9 +109,13 @@ public class ComplexDomain extends DetectionFunction {
 			 */
 
 			for (int i = 0; i < components.spectrum.length; i++) {
-				targetValue = Math.abs(lastSpectrum[i])
+				/*targetValue = Math.abs(lastSpectrum[i])
 								* Math.exp(2 * previousPhase[i]
-										- antePreviousPhase[i]);
+										- antePreviousPhase[i]);*/
+				//use the cosine to include just the real part of the complex exponential
+				targetValue = Math.abs(lastSpectrum[i])
+						* Math.cos(2 * previousPhase[i]
+								- antePreviousPhase[i]);
 				if (!isRectified) {
 
 					complex += Math.abs(spectrum[i] - targetValue);

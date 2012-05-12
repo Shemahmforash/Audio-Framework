@@ -294,7 +294,7 @@ public class PeakDetector {
 	 * @return
 	 */
 	public ArrayList<Float> lowPassFilter(final ArrayList<Float> input) {
-		double alpha = 0.15;
+		double alpha = 0.8;
 		ArrayList<Float> smoothed = new ArrayList<Float>();
 
 		double x0 = 0;
@@ -620,20 +620,21 @@ public class PeakDetector {
 			// DF - threshold
 			this.calcFilteredDetectionFunction("traditional");
 
-			for (int i = 0; i < filteredDetectionFunction.size() - 1; i++) {
-				/*
-				 * in the filtered detection function, a peak is a value bigger
-				 * than the next value
-				 */
-				if (filteredDetectionFunction.get(i) > filteredDetectionFunction
-						.get(i + 1) && filteredDetectionFunction.get(i) > 0) {
-					peaks.add(filteredDetectionFunction.get(i));
-					// peaks.add((float)1);
-				}
-
-				else
-					peaks.add((float) 0);
+		}
+		
+		for (int i = 0; i < filteredDetectionFunction.size() - 1; i++) {
+			/*
+			 * in the filtered detection function, a peak is a value bigger
+			 * than the next value
+			 */
+			if (filteredDetectionFunction.get(i) > filteredDetectionFunction
+					.get(i + 1) && filteredDetectionFunction.get(i) > 0) {
+				peaks.add(filteredDetectionFunction.get(i));
+				// peaks.add((float)1);
 			}
+
+			else
+				peaks.add((float) 0);
 		}
 	}
 

@@ -451,9 +451,9 @@ public class Plot {
 		 */
 		Graphics2D graph = buffImage.createGraphics();
 		graph.setColor(color);
-		
+
 		int position = 0;
-		
+
 		for (int i = 0; i < onsets.size(); i++) {
 			/**
 			 * converts the onset (seconds) to pixels in order to find a
@@ -463,6 +463,41 @@ public class Plot {
 			// System.out.println(position);
 			graph.drawLine(position, 0, position, buffImage.getHeight());
 		}
+	}
+
+	public void plotConstantLine(final float constant, final int size,
+			final float samplesPerPixel,
+			final Color color) {
+
+		/**
+		 * Instantiates the object responsible for drawing the lines and sets
+		 * the line colors.
+		 */
+		Graphics2D graph = buffImage.createGraphics();
+		graph.setColor(color);
+
+		// Scales the first value of the array in order to be plotted
+		float lastSampleScaled = calculateScaledValue(buffImage, constant, 0);
+
+		for (int i = 1; i < size; i++) {
+			// float value = (samples.get(i) / scalingFactor)
+			// * image.getHeight() / 3 + image.getHeight() / 2;
+
+			// Scales the ith value of the array in order to be plotted
+			float sampleScaled = calculateScaledValue(buffImage, constant, 0);
+
+			/* it draws a line between the last and this value */
+			graph.drawLine((int) ((i - 1) / samplesPerPixel),
+					buffImage.getHeight() - (int) lastSampleScaled,
+					(int) (i / samplesPerPixel), buffImage.getHeight()
+							- (int) sampleScaled);
+
+			/*
+			 * the sample of this iteration will be next iteration's last sample
+			 */
+			lastSampleScaled = sampleScaled;
+		}
+
 	}
 
 	/**

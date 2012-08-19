@@ -37,14 +37,8 @@ public class ExampleSaveAudio {
 			// swap current and previous
 			samples.addAll(Arrays.asList(currentSamples));
 			samples.addAll(Arrays.asList(previousSamples));
-			// Collections.addAll(samples, currentSamples);
-			/*
-			 * for(int i = 0; i < currentSamples.length; i++) {
-			 * samples.add(currentSamples[i]); } for(int i = 0; i <
-			 * previousSamples.length; i++) { samples.add(previousSamples[i]); }
-			 */
 
-			// calculate previousSamples again
+			// get previousSamples again
 			decoder.readSamples(previousSamples);
 		}
 		System.out.println(samples.size());
@@ -54,42 +48,15 @@ public class ExampleSaveAudio {
 			finalSamples[i] = samples.get(i);
 		}
 
-		for (int i = 0; i < finalSamples.length; i = i + sampleWindowSize) {
+		// SAVE IT
+		device.saveSamples(finalSamples, OUTPUTFILE);
+		//TODO: Está a gravar ao dobro da velocidade
+		
+		/* Play it */
+		/*for (int i = 0; i < finalSamples.length; i = i + sampleWindowSize) {
 			float tmp[] = Arrays.copyOfRange(finalSamples, i, i
 					+ sampleWindowSize);
 			device.playSamples(tmp);
-		}
-
-		/*
-		 * ArrayList<Float> finalSamples = new ArrayList<Float>();
-		 * 
-		 * float[] tmpSamples; tmpSamples = new float[sampleWindowSize]; while
-		 * (decoder.readSamples(tmpSamples) != 0) {
-		 * //device.playSamples(tmpSamples); for (int i = 0; i <
-		 * tmpSamples.length; i++) { samples.add(tmpSamples[i]); } }
-		 * 
-		 * System.out.println(samples.size());
-		 * 
-		 * for(int i = 0; i < samples.size(); i = i + 2*sampleWindowSize) {
-		 * List<Float> head = samples.subList(i, sampleWindowSize + i);
-		 * List<Float> tail = samples.subList(sampleWindowSize + i, i +
-		 * 2*sampleWindowSize);
-		 * 
-		 * //swap consecutive windows finalSamples.addAll(tail);
-		 * finalSamples.addAll(head); } System.out.println(finalSamples.size());
-		 * 
-		 * System.out.println(finalSamples.get(2* sampleWindowSize -1));
-		 * System.out.println(samples.get(sampleWindowSize));
-		 */
-
-		/*
-		 * float[] toPlay = new float[finalSamples.size()]; for (int i = 0; i <
-		 * finalSamples.size(); i++) { Float f = finalSamples.get(i); toPlay[i]
-		 * = (f != null ? f : 0); }
-		 * 
-		 * //TODO: está a dar erro a tocar!! DEVE SER POR TER DE PASSAR SAMPLES
-		 * DE 1024!!! device.playSamples(toPlay);
-		 */
+		}*/
 	}
-
 }

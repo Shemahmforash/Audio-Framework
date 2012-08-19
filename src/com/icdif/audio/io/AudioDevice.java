@@ -1,7 +1,15 @@
 package com.icdif.audio.io;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.AudioFormat.Encoding;
@@ -17,7 +25,7 @@ public class AudioDevice {
 	/**
 	 * the buffer size in samples
 	 */
-	//private final int BUFFER_SIZE = 1024;
+	// private final int BUFFER_SIZE = 1024;
 
 	/**
 	 * the java sound line, where to send data to play
@@ -66,7 +74,7 @@ public class AudioDevice {
 		// passes the array of bytes to the line, i.e., the soundcard
 		soundLine.write(byteBuffer, 0, byteBuffer.length);
 	}
-	
+
 	public void playSamples(final Float[] samples) {
 		// TODO: tocar em stereo e noutro sample rate
 
@@ -74,6 +82,48 @@ public class AudioDevice {
 		this.fillBuffer(samples);
 		// passes the array of bytes to the line, i.e., the soundcard
 		soundLine.write(byteBuffer, 0, byteBuffer.length);
+	}
+
+	public void saveSamples(final Float[] samples, String filename) throws IOException {
+		// fills the buffer by converting the integers to byte arrays
+		this.fillBuffer(samples);
+		
+		// Get an input stream on the
+		// byte array containing the data
+		InputStream byteArrayInputStream = new ByteArrayInputStream(
+				byteBuffer);
+		AudioFormat audioFormat = getAudioFormat();
+		AudioInputStream audioInputStream = new AudioInputStream(byteArrayInputStream,
+				audioFormat, byteBuffer.length / audioFormat.getFrameSize());
+		DataLine.Info dataLineInfo = new DataLine.Info(
+				SourceDataLine.class, audioFormat);
+		
+		if (AudioSystem.isFileTypeSupported(AudioFileFormat.Type.WAVE,
+				audioInputStream)) {
+			AudioSystem.write(audioInputStream,
+					AudioFileFormat.Type.WAVE, new File(filename));
+		}
+	}
+	
+	public void saveSamples(final float[] samples, String filename) throws IOException {
+		// fills the buffer by converting the integers to byte arrays
+		this.fillBuffer(samples);
+		
+		// Get an input stream on the
+		// byte array containing the data
+		InputStream byteArrayInputStream = new ByteArrayInputStream(
+				byteBuffer);
+		AudioFormat audioFormat = getAudioFormat();
+		AudioInputStream audioInputStream = new AudioInputStream(byteArrayInputStream,
+				audioFormat, byteBuffer.length / audioFormat.getFrameSize());
+		DataLine.Info dataLineInfo = new DataLine.Info(
+				SourceDataLine.class, audioFormat);
+		
+		if (AudioSystem.isFileTypeSupported(AudioFileFormat.Type.WAVE,
+				audioInputStream)) {
+			AudioSystem.write(audioInputStream,
+					AudioFileFormat.Type.WAVE, new File(filename));
+		}
 	}
 
 	/**
@@ -85,7 +135,7 @@ public class AudioDevice {
 	 */
 	private void fillBuffer(final float[] samples) {
 		byteBuffer = new byte[samples.length * 2];
-		
+
 		for (int i = 0, j = 0; i < samples.length; i++, j += 2) {
 			// converts a normalized float into a short
 			short value = (short) (samples[i] * Short.MAX_VALUE);
@@ -108,7 +158,7 @@ public class AudioDevice {
 			// byteBuffer[j + 1] = (byte) (value >>> 8);
 		}
 	}
-	
+
 	private void fillBuffer(final Float[] samples) {
 		byteBuffer = new byte[samples.length * 2];
 		for (int i = 0, j = 0; i < samples.length; i++, j += 2) {
@@ -200,7 +250,8 @@ public class AudioDevice {
 				sampleRate, false);
 	}
 
-	// TODO: Suporte para tocar outro sample size (agora só suporta 16bits), para
+	// TODO: Suporte para tocar outro sample size (agora só suporta 16bits),
+	// para
 	// stéreo e para outro framerate (agora apenas suporta 2)
 
 }

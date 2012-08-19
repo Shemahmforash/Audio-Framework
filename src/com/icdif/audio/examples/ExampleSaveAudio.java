@@ -12,8 +12,10 @@ import com.icdif.audio.io.WavDecoder;
 
 public class ExampleSaveAudio {
 
-	public static final String INPUTFILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/RM-C027.wav";
-	public static final String OUTPUTFILE = "/home/wanderer/RM-C027.wav";
+	//public static final String INPUTFILE = "/home/wanderer/Dropbox/inesc/ist-chorus/onset-detection/grfia.dlsi.ua.es/cm/worklines/pertusa/onset/ODB/sounds/RM-C027.wav";
+	public static final String INPUTFILE = "/home/wanderer/Dropbox/artigo vitor/Comboio.wav";
+	//public static final String OUTPUTFILE = "/home/wanderer/RM-C027.wav";
+	public static final String OUTPUTFILE = "/home/wanderer/Dropbox/artigo vitor/comboio-obfuscated.wav";
 
 	public static final int sampleWindowSize = 8192;
 

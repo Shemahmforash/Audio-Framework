@@ -36,6 +36,8 @@ public class AudioDevice {
 	 * buffer used for playing BUFFER_SIZE 16-bit (2 bytes) samples
 	 */
 	private byte[] byteBuffer;// = new byte[BUFFER_SIZE * 2];
+	
+	private float sampleRate;
 
 	/**
 	 * Initializes the audio system
@@ -49,6 +51,8 @@ public class AudioDevice {
 		 * Defines the audio format
 		 */
 		AudioFormat format = getAudioFormat(sampleRate);
+		
+		this.sampleRate = sampleRate;
 
 		/*
 		 * Opens the line to be used in playing
@@ -92,7 +96,7 @@ public class AudioDevice {
 		// byte array containing the data
 		InputStream byteArrayInputStream = new ByteArrayInputStream(
 				byteBuffer);
-		AudioFormat audioFormat = getAudioFormat();
+		AudioFormat audioFormat = getAudioFormat(this.sampleRate);
 		AudioInputStream audioInputStream = new AudioInputStream(byteArrayInputStream,
 				audioFormat, byteBuffer.length / audioFormat.getFrameSize());
 		DataLine.Info dataLineInfo = new DataLine.Info(
@@ -113,7 +117,7 @@ public class AudioDevice {
 		// byte array containing the data
 		InputStream byteArrayInputStream = new ByteArrayInputStream(
 				byteBuffer);
-		AudioFormat audioFormat = getAudioFormat();
+		AudioFormat audioFormat = getAudioFormat(this.sampleRate);
 		AudioInputStream audioInputStream = new AudioInputStream(byteArrayInputStream,
 				audioFormat, byteBuffer.length / audioFormat.getFrameSize());
 		DataLine.Info dataLineInfo = new DataLine.Info(

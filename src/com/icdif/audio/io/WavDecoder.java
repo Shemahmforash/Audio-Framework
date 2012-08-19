@@ -5,6 +5,7 @@ package com.icdif.audio.io;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 /**
  * This class implements the AudioDecoder Interface and is responsible for
@@ -110,6 +111,35 @@ public class WavDecoder implements AudioDecoder {
 	@Override
 	public int readSamples(float[] samples) {
 
+		int numSamples = 0;
+		for (int i = 0; i < samples.length; i++) {
+			float sample = 0;
+			try {
+				// the sample is an average of the values in the several
+				// channels, i.e, we convert to mono, in order to easily make
+				// analysis. We also put the sample in the interval [-1,1]
+				for (int channel = 0; channel < channels; channel++) {
+					int shortValue = inputStream.readShortLittleEndian();
+					sample += (shortValue / MAX_SHORT_VALUE);
+				}
+				sample /= channels;
+				samples[i] = sample;
+				numSamples++;
+
+			} catch (Exception e) {
+				// e.printStackTrace();
+				/*
+				 * When the exception is thrown, it means that there is no more
+				 * data to read from the stream
+				 */
+				break;
+			}
+		}
+
+		return numSamples;
+	}
+	
+	public int readSamples(Float[] samples) {
 		int numSamples = 0;
 		for (int i = 0; i < samples.length; i++) {
 			float sample = 0;

@@ -17,7 +17,7 @@ public class AudioDevice {
 	/**
 	 * the buffer size in samples
 	 */
-	private final int BUFFER_SIZE = 1024;
+	//private final int BUFFER_SIZE = 1024;
 
 	/**
 	 * the java sound line, where to send data to play
@@ -27,7 +27,7 @@ public class AudioDevice {
 	/**
 	 * buffer used for playing BUFFER_SIZE 16-bit (2 bytes) samples
 	 */
-	private byte[] byteBuffer = new byte[BUFFER_SIZE * 2];
+	private byte[] byteBuffer;// = new byte[BUFFER_SIZE * 2];
 
 	/**
 	 * Initializes the audio system
@@ -66,6 +66,15 @@ public class AudioDevice {
 		// passes the array of bytes to the line, i.e., the soundcard
 		soundLine.write(byteBuffer, 0, byteBuffer.length);
 	}
+	
+	public void playSamples(final Float[] samples) {
+		// TODO: tocar em stereo e noutro sample rate
+
+		// fills the buffer by converting the integers to byte arrays
+		this.fillBuffer(samples);
+		// passes the array of bytes to the line, i.e., the soundcard
+		soundLine.write(byteBuffer, 0, byteBuffer.length);
+	}
 
 	/**
 	 * Converts the samples from the array of float bytes and populates the
@@ -75,6 +84,33 @@ public class AudioDevice {
 	 *            The Samples to fill the buffer
 	 */
 	private void fillBuffer(final float[] samples) {
+		byteBuffer = new byte[samples.length * 2];
+		
+		for (int i = 0, j = 0; i < samples.length; i++, j += 2) {
+			// converts a normalized float into a short
+			short value = (short) (samples[i] * Short.MAX_VALUE);
+
+			/*
+			 * buffer[j] = (byte) (value | 0xff); // >> Signed right shift
+			 * buffer[j + 1] = (byte) (value >> 8);
+			 */
+
+			// converts the short, to an array of two bytes
+			// the 0xff and the bitshift are meant to force the results to be in
+			// the interval 0-254
+			byteBuffer[j] = (byte) (value & 0xff);
+			byteBuffer[j + 1] = (byte) ((value >> 8) & 0xff);
+
+			// Note: A narrowing cast discards the high-order bits that
+			// don't fit into the narrower type.
+			// !!!parece q assim dá saltos ao ouvir!!
+			// byteBuffer[j] = (byte) value;
+			// byteBuffer[j + 1] = (byte) (value >>> 8);
+		}
+	}
+	
+	private void fillBuffer(final Float[] samples) {
+		byteBuffer = new byte[samples.length * 2];
 		for (int i = 0, j = 0; i < samples.length; i++, j += 2) {
 			// converts a normalized float into a short
 			short value = (short) (samples[i] * Short.MAX_VALUE);
